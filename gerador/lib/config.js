@@ -13,16 +13,6 @@ const path = require('node:path');
 /** Raiz do projeto (uma pasta acima de gerador/lib). */
 const RAIZ = path.resolve(__dirname, '..', '..');
 
-/** 1 milímetro em pontos PostScript (unidade do PDF). */
-const PT_POR_MM = 72 / 25.4;
-
-/**
- * Converte milímetros para pontos.
- * @param {number} valor
- * @returns {number}
- */
-const mm = (valor) => Number(valor) * PT_POR_MM;
-
 /** Caminhos absolutos usados por todo o gerador. */
 const CAMINHOS = {
   raiz: RAIZ,
@@ -30,11 +20,7 @@ const CAMINHOS = {
   dados: path.join(RAIZ, 'dados'),
   json: path.join(RAIZ, 'dados', 'funcionarios.json'),
   fallbackJs: path.join(RAIZ, 'dados', 'funcionarios.js'),
-  fotos: path.join(RAIZ, 'funcionarios'),
   qrcodes: path.join(RAIZ, 'qrcodes'),
-  pdf: path.join(RAIZ, 'pdf'),
-  templates: path.join(RAIZ, 'templates'),
-  template: path.join(RAIZ, 'templates', 'credencial.template.json'),
   indexHtml: path.join(RAIZ, 'index.html'),
   assets: path.join(RAIZ, 'assets')
 };
@@ -91,25 +77,13 @@ function montarBaseUrl(config) {
 }
 
 /**
- * Carrega config.json + template e devolve tudo já resolvido.
- * @returns {{config: object, template: object, baseUrl: string, caminhos: object}}
+ * Carrega config.json e devolve tudo já resolvido.
+ * @returns {{config: object, baseUrl: string, caminhos: object}}
  */
 function carregar() {
   const config = lerJSON(CAMINHOS.config);
-  const template = lerJSON(CAMINHOS.template);
-
-  // As medidas de impressão do config.json têm prioridade sobre o template.
-  template.cartao = {
-    ...template.cartao,
-    larguraMM: config.impressao?.larguraMM ?? template.cartao.larguraMM,
-    alturaMM: config.impressao?.alturaMM ?? template.cartao.alturaMM,
-    sangriaMM: config.impressao?.sangriaMM ?? template.cartao.sangriaMM,
-    margemSeguraMM: config.impressao?.margemSeguraMM ?? template.cartao.margemSeguraMM
-  };
-
   return {
     config,
-    template,
     baseUrl: montarBaseUrl(config),
     caminhos: CAMINHOS
   };
@@ -127,9 +101,7 @@ function urlValidacao(baseUrl, id) {
 
 module.exports = {
   RAIZ,
-  PT_POR_MM,
   CAMINHOS,
-  mm,
   lerJSON,
   gravarJSON,
   garantirPasta,

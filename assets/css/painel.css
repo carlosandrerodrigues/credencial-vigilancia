@@ -16,11 +16,11 @@
 }
 .painel__marca {
   flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 58px; height: 58px;
+  width: 76px;
+  height: auto;
   background: rgba(255, 255, 255, .96);
-  border-radius: var(--raio-lg);
+  border-radius: var(--raio-md);
+  padding: 3px;
 }
 .painel__titulo { font-size: 18px; font-weight: 700; line-height: 1.25; }
 .painel__subtitulo { font-size: 13px; color: rgba(255, 255, 255, .86); margin-top: 2px; }

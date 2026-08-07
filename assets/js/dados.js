@@ -74,8 +74,7 @@
         cargo: String(f.cargo || '').trim(),
         vinculo: String(f.vinculo || '').trim(),
         matricula: String(f.matricula || '').trim(),
-        status: f.status || SITUACAO.VALIDA,
-        foto: f.foto || `${CAMINHOS.fotos}${id}.jpg`
+        status: f.status || SITUACAO.VALIDA
       };
     },
 

@@ -86,22 +86,6 @@
     },
 
     /**
-     * Iniciais do nome (no máximo duas letras) para o avatar de fallback.
-     * @param {string} nome
-     * @returns {string}
-     */
-    iniciais(nome) {
-      const partes = String(nome || '')
-        .trim()
-        .split(/\s+/)
-        .filter((p) => p.length > 2 || /^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]/.test(p));
-      if (!partes.length) return '?';
-      const primeira = partes[0][0] || '';
-      const ultima = partes.length > 1 ? partes[partes.length - 1][0] : '';
-      return (primeira + ultima).toUpperCase();
-    },
-
-    /**
      * Normaliza um identificador para 6 dígitos: 7 -> '000007'.
      * @param {string|number} valor
      * @returns {string}

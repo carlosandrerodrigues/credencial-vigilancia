@@ -128,15 +128,11 @@ async function principal() {
     };
 
     registro.status = 'valida';
-    registro.foto = await perguntar(rl, 'Arquivo da foto', {
-      padrao: `funcionarios/${Format.normalizarId(registro.id)}.jpg`
-    });
 
     const salvo = Dados.acrescentar(registro);
 
     Log.titulo('Servidor cadastrado');
     Log.ok(`Registro ${salvo.id} — ${salvo.nome}`);
-    Log.info(`Coloque a foto 3x4 em ${salvo.foto} (JPG ou PNG, mínimo 480x600 px).`);
     Log.info(`Validação: ${Config.urlValidacao(Config.montarBaseUrl(config), salvo.id)}`);
 
     const gerar = await perguntar(rl, 'Executar "npm run gerar" agora? (s/n)', { padrao: 's' });
@@ -146,7 +142,7 @@ async function principal() {
       const resultado = spawnSync(process.execPath, [path.join(__dirname, 'index.js')], { stdio: 'inherit' });
       process.exitCode = resultado.status ?? 0;
     } else {
-      Log.info('Lembre-se de executar "npm run gerar" para produzir QR Code e PDF.');
+      Log.info('Lembre-se de executar "npm run gerar" para produzir o QR Code.');
     }
   } catch (erro) {
     rl.fechar();

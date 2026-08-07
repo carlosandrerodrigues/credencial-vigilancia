@@ -7,15 +7,12 @@
  */
 'use strict';
 
-const fs = require('node:fs');
-const path = require('node:path');
 const Format = require('../../assets/js/format.js');
 const { CAMINHOS, lerJSON, gravarJSON } = require('./config');
 
 /**
  * Normaliza um registro, preenchendo o que faltar.
  * @param {object} bruto
- * @param {object} config
  * @returns {object}
  */
 function normalizar(bruto) {
@@ -28,8 +25,7 @@ function normalizar(bruto) {
     cargo: String(bruto.cargo || '').trim(),
     vinculo: String(bruto.vinculo || '').trim(),
     matricula: String(bruto.matricula || '').trim(),
-    status: bruto.status || 'valida',
-    foto: bruto.foto || `funcionarios/${id}.jpg`
+    status: bruto.status || 'valida'
   };
 }
 
@@ -50,13 +46,6 @@ function validar(f, idsVistos) {
   if (!f.cargo) erros.push(`${onde}: cargo/função obrigatório.`);
   if (!f.matricula) avisos.push(`${onde}: matrícula não informada.`);
   if (!Format.cpfValido(f.cpf)) avisos.push(`${onde}: CPF ${f.cpf} não passa na validação dos dígitos.`);
-
-  const foto = path.join(CAMINHOS.raiz, f.foto);
-  if (!fs.existsSync(foto)) {
-    avisos.push(`${onde}: foto ausente (${f.foto}) — será usado o avatar com as iniciais.`);
-  } else if (!/\.(jpe?g|png)$/i.test(f.foto)) {
-    erros.push(`${onde}: a foto precisa ser .jpg ou .png (PDFKit não lê outros formatos).`);
-  }
 
   return { erros, avisos };
 }

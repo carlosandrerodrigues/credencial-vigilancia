@@ -10,21 +10,39 @@
   'use strict';
 
   const VS = global.VS || (global.VS = {});
-  const { Format, Icones, Dados, ORGAO, SITUACAO_INFO } = VS;
+  const { Format, Icones, Dados, CAMINHOS, ORGAO, SITUACAO_INFO } = VS;
 
   /**
-   * Monta uma linha de campo (ícone + rótulo + valor).
-   * @param {{icone: string, rotulo: string, valor: string, riscado?: boolean}} campo
+   * Monta uma linha de campo (ícone + rótulo + valor lado a lado).
+   * @param {{icone: string, rotulo: string, valor: string}} campo
    * @returns {string}
    */
   function linhaCampo(campo) {
     if (!campo.valor) return '';
     return `
-    <div class="campo${campo.riscado ? ' campo--riscado' : ''}">
+    <div class="campo">
       <span class="campo__icone">${Icones.campo(campo.icone)}</span>
-      <span class="campo__rotulo">${Format.escaparHTML(campo.rotulo)}</span>
+      <span class="campo__rotulo">${Format.escaparHTML(campo.rotulo)}:</span>
       <span class="campo__valor">${Format.escaparHTML(campo.valor)}</span>
     </div>`;
+  }
+
+  /**
+   * Cabeçalho institucional: brasão da prefeitura + nome do órgão.
+   * @param {object} orgao
+   * @param {string} prefixo caminho relativo até a raiz do projeto
+   * @returns {string}
+   */
+  function cabecalho(orgao, prefixo) {
+    return `
+  <header class="credencial__topo">
+    <img class="credencial__marca" src="${Format.escaparHTML(prefixo + CAMINHOS.logo)}"
+         alt="Brasão da Prefeitura Municipal de ${Format.escaparHTML(orgao.municipio)}" decoding="async">
+    <div class="credencial__titulos">
+      <h1 class="credencial__orgao">${Format.escaparHTML(`${orgao.prefeitura} ${orgao.municipio} - ${orgao.uf}`)}</h1>
+      <p class="credencial__setor">${Format.escaparHTML(orgao.setor)}</p>
+    </div>
+  </header>`;
   }
 
   const Credencial = {
@@ -38,12 +56,7 @@
      * @returns {string} HTML
      */
     render(funcionario, opcoes = {}) {
-      const cfg = {
-        mascararCPF: true,
-        prefixo: '',
-        orgao: ORGAO,
-        ...opcoes
-      };
+      const cfg = { mascararCPF: true, prefixo: '', orgao: ORGAO, ...opcoes };
       const orgao = { ...ORGAO, ...(cfg.orgao || {}) };
       const situacao = Dados.situacao(funcionario);
       const info = SITUACAO_INFO[situacao] || SITUACAO_INFO.nao_encontrada;
@@ -59,29 +72,12 @@
 
       return `
 <article class="credencial credencial--${info.tema}" aria-live="polite">
-  <header class="credencial__topo">
-    <div class="credencial__marca">${Icones.brasao(58)}</div>
-    <div class="credencial__titulos">
-      <h1 class="credencial__orgao">${Format.escaparHTML(`${orgao.prefeitura} ${orgao.municipio} - ${orgao.uf}`)}</h1>
-      <p class="credencial__setor">${Format.escaparHTML(orgao.setor)}</p>
-    </div>
-  </header>
+  ${cabecalho(orgao, cfg.prefixo)}
 
   <div class="credencial__situacao">
     ${Icones.selo(info.icone, 26)}
     <span>${Format.escaparHTML(info.rotulo)}</span>
   </div>
-
-  <section class="credencial__identificacao">
-    <div class="credencial__foto">
-      ${Credencial.foto(funcionario, cfg.prefixo)}
-    </div>
-    <div class="credencial__resumo">
-      <p class="credencial__nome">${Format.escaparHTML(funcionario.nome)}</p>
-      <p class="credencial__cargo">${Format.escaparHTML(funcionario.cargo)}</p>
-      <p class="credencial__matricula">${funcionario.matricula ? `Matrícula ${Format.escaparHTML(funcionario.matricula)} &middot; ` : ''}Registro nº ${Format.escaparHTML(funcionario.id)}</p>
-    </div>
-  </section>
 
   <section class="credencial__dados">
     ${campos.map(linhaCampo).join('')}
@@ -90,44 +86,22 @@
   <footer class="credencial__rodape">
     <p>${Format.escaparHTML(orgao.rodape1)}</p>
     <p>${Format.escaparHTML(orgao.rodape2)}</p>
-    <p class="credencial__verificacao">Consulta realizada em ${Format.escaparHTML(Credencial.carimbo())}</p>
+    <p class="credencial__verificacao">Registro nº ${Format.escaparHTML(funcionario.id)} &middot; consulta em ${Format.escaparHTML(Credencial.carimbo())}</p>
   </footer>
 </article>`;
     },
 
     /**
-     * Imagem do servidor com degradação elegante para avatar vetorial.
-     * @param {object} funcionario
-     * @param {string} prefixo
-     * @returns {string}
-     */
-    foto(funcionario, prefixo = '') {
-      const caminho = Format.escaparHTML(prefixo + funcionario.foto);
-      const alternativo = Icones.avatar(funcionario.nome);
-      return `
-      <div class="foto-caixa">
-        <img src="${caminho}" alt="Fotografia de ${Format.escaparHTML(funcionario.nome)}" decoding="async"
-             onerror="this.classList.add('foto--oculta');this.nextElementSibling.hidden=false;">
-        <div class="foto-alternativa" hidden>${alternativo}</div>
-      </div>`;
-    },
-
-    /**
      * Bloco exibido quando o identificador não existe na base.
      * @param {string} id
+     * @param {string} [prefixo]
      * @returns {string}
      */
-    naoEncontrada(id) {
+    naoEncontrada(id, prefixo = '') {
       const info = SITUACAO_INFO.nao_encontrada;
       return `
 <article class="credencial credencial--erro">
-  <header class="credencial__topo">
-    <div class="credencial__marca">${Icones.brasao(58)}</div>
-    <div class="credencial__titulos">
-      <h1 class="credencial__orgao">${Format.escaparHTML(`${ORGAO.prefeitura} ${ORGAO.municipio} - ${ORGAO.uf}`)}</h1>
-      <p class="credencial__setor">${Format.escaparHTML(ORGAO.setor)}</p>
-    </div>
-  </header>
+  ${cabecalho(ORGAO, prefixo)}
   <div class="credencial__situacao">
     ${Icones.selo(info.icone, 26)}
     <span>${Format.escaparHTML(info.rotulo)}</span>

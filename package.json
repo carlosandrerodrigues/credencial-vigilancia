@@ -17,12 +17,10 @@
     "credencial",
     "vigilancia-sanitaria",
     "qrcode",
-    "pdf",
     "github-pages"
   ],
   "license": "MIT",
   "dependencies": {
-    "pdfkit": "^0.15.1",
     "qrcode": "^1.5.4"
   }
 }

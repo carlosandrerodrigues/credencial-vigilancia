@@ -17,16 +17,6 @@
   },
 
   "credencial": {
-    "mascararCPF": true,
-    "tituloCartao": "CREDENCIAL FUNCIONAL"
-  },
-
-  "impressao": {
-    "larguraMM": 85.6,
-    "alturaMM": 53.98,
-    "sangriaMM": 3,
-    "margemSeguraMM": 3,
-    "dpiAlvo": 300,
-    "gerarArquivoUnico": true
+    "mascararCPF": true
   }
 }

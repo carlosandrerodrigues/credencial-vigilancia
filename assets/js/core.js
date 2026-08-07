@@ -50,8 +50,7 @@
     json: 'dados/funcionarios.json',
     fallbackJs: 'dados/funcionarios.js',
     qrcodes: 'qrcodes/',
-    pdf: 'pdf/',
-    fotos: 'funcionarios/'
+    logo: 'assets/img/logo.png'
   };
 
   /**

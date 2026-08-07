@@ -3,7 +3,7 @@
  * Controlador da página index.html (painel administrativo).
  *
  * Responsabilidades:
- *  - listar os servidores cadastrados com QR Code, link de validação e PDF;
+ *  - listar os servidores cadastrados com QR Code e link de validação;
  *  - oferecer um formulário de cadastro que devolve o JSON pronto
  *    (copiar ou baixar), mantendo o projeto 100% estático e sem banco de dados.
  */
@@ -11,7 +11,7 @@
   'use strict';
 
   const VS = global.VS;
-  const { Format, Dados, Icones, CAMINHOS, SITUACAO_INFO } = VS;
+  const { Format, Dados, CAMINHOS, SITUACAO_INFO } = VS;
 
   /** Estado da página. */
   const estado = {
@@ -49,7 +49,7 @@
       </div>
       <div class="cartao__acoes">
         <a class="botao botao--primario" href="${url}">Abrir validação</a>
-        <a class="botao" href="${CAMINHOS.pdf}${Format.escaparHTML(f.id)}.pdf" target="_blank" rel="noopener">PDF do crachá</a>
+        <a class="botao" href="${CAMINHOS.qrcodes}${Format.escaparHTML(f.id)}.png" target="_blank" rel="noopener">Baixar QR Code</a>
         <button class="botao botao--suave" type="button" data-copiar="${Format.escaparHTML(f.id)}">Copiar link</button>
       </div>
     </article>`;
@@ -112,8 +112,7 @@
       cargo: d.cargo.trim(),
       vinculo: d.vinculo.trim(),
       matricula: d.matricula.trim(),
-      status: d.status || 'valida',
-      foto: (d.foto || '').trim() || `${CAMINHOS.fotos}${id}.jpg`
+      status: d.status || 'valida'
     };
   }
 
@@ -157,8 +156,8 @@
    * @returns {object}
    */
   function limpar(f) {
-    const { id, nome, cpf, endereco, cargo, vinculo, matricula, status, foto } = f;
-    return { id, nome, cpf, endereco, cargo, vinculo, matricula, status, foto };
+    const { id, nome, cpf, endereco, cargo, vinculo, matricula, status } = f;
+    return { id, nome, cpf, endereco, cargo, vinculo, matricula, status };
   }
 
   /**
@@ -263,7 +262,7 @@
 
   /** Ponto de entrada. */
   async function iniciar() {
-    document.getElementById('marca').innerHTML = Icones.brasao(46);
+    document.getElementById('marca').src = CAMINHOS.logo;
     try {
       const base = await Dados.carregar();
       estado.meta = base.meta;

@@ -2,55 +2,15 @@
  * icones.js
  * Biblioteca de ícones/marcas em SVG inline.
  *
- * Motivo de existir: o projeto não depende de nenhum CDN, fonte de ícones
- * ou imagem binária. Tudo é vetorial, leve e escala sem perda em qualquer tela.
+ * Motivo de existir: o projeto não depende de nenhum CDN nem de fonte de
+ * ícones. O único binário é o brasão da prefeitura (assets/img/logo.png).
  */
 (function (global) {
   'use strict';
 
   const VS = global.VS || (global.VS = {});
-  const { Format } = VS;
 
   const Icones = {
-    /**
-     * Brasão/marca institucional (sol, serras e rio — identidade de Taguatinga/TO).
-     * @param {number} tamanho  lado do quadrado em px
-     * @returns {string} markup SVG
-     */
-    brasao(tamanho = 56) {
-      return `
-<svg class="brasao" width="${tamanho}" height="${tamanho}" viewBox="0 0 100 100" role="img"
-     aria-label="Brasão da Prefeitura Municipal de Taguatinga - Tocantins">
-  <defs>
-    <linearGradient id="brasaoCeu" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7FC5F5"/>
-      <stop offset="100%" stop-color="#D9EEFC"/>
-    </linearGradient>
-    <linearGradient id="brasaoSol" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFC42E"/>
-      <stop offset="100%" stop-color="#F3701B"/>
-    </linearGradient>
-    <clipPath id="brasaoCorte"><rect x="6" y="6" width="88" height="88" rx="20"/></clipPath>
-  </defs>
-
-  <rect x="3" y="3" width="94" height="94" rx="23" fill="#0B3C8C"/>
-  <g clip-path="url(#brasaoCorte)">
-    <rect x="6" y="6" width="88" height="88" fill="url(#brasaoCeu)"/>
-    <circle cx="50" cy="46" r="17" fill="url(#brasaoSol)"/>
-    <path d="M6 62 Q28 40 50 62 Q72 40 94 62 L94 94 L6 94 Z" fill="#12864B"/>
-    <path d="M6 74 Q30 62 50 74 Q70 86 94 74 L94 94 L6 94 Z" fill="#0B5FA5"/>
-    <g fill="none" stroke="#0B3C8C" stroke-width="2.4" stroke-linecap="round">
-      <path d="M22 28 q5 -5 10 0"/><path d="M32 28 q5 -5 10 0"/>
-      <path d="M60 22 q4 -4 8 0"/><path d="M68 22 q4 -4 8 0"/>
-    </g>
-    <g stroke="#FFFFFF" stroke-width="1.6" opacity=".7">
-      <path d="M14 82 h20"/><path d="M62 86 h22"/>
-    </g>
-  </g>
-  <rect x="3" y="3" width="94" height="94" rx="23" fill="none" stroke="#08306F" stroke-width="2"/>
-</svg>`.trim();
-    },
-
     /**
      * Selo de situação (check, alerta ou erro).
      * @param {'check'|'alerta'|'erro'} tipo
@@ -93,29 +53,6 @@
 <svg class="icone-campo" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
      stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
   ${d}
-</svg>`.trim();
-    },
-
-    /**
-     * Avatar vetorial com as iniciais — usado quando não há foto do servidor.
-     * @param {string} nome
-     * @returns {string}
-     */
-    avatar(nome) {
-      const iniciais = Format.iniciais(nome);
-      return `
-<svg class="avatar-fallback" viewBox="0 0 120 150" role="img" aria-label="Foto não cadastrada">
-  <defs>
-    <linearGradient id="avatarBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#E8F0FB"/>
-      <stop offset="100%" stop-color="#CBDDF3"/>
-    </linearGradient>
-  </defs>
-  <rect width="120" height="150" fill="url(#avatarBg)"/>
-  <circle cx="60" cy="58" r="26" fill="#9FBEE2"/>
-  <path d="M14 150c6-27 23-40 46-40s40 13 46 40z" fill="#9FBEE2"/>
-  <text x="60" y="68" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif"
-        font-size="34" font-weight="700" fill="#0B3C8C" opacity=".85">${Format.escaparHTML(iniciais)}</text>
 </svg>`.trim();
     }
   };

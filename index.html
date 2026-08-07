@@ -19,7 +19,7 @@
     <div class="container">
 
       <header class="painel__topo">
-        <div class="painel__marca" id="marca"></div>
+        <img class="painel__marca" id="marca" src="assets/img/logo.png" alt="Brasão da Prefeitura Municipal de Taguatinga">
         <div>
           <p class="painel__titulo">Prefeitura Municipal de Taguatinga - Tocantins</p>
           <p class="painel__subtitulo">Vigilância Sanitária · Painel de credenciais funcionais</p>
@@ -49,51 +49,44 @@
         <!-- GERADOR:INICIO -->
         <p class="bloco__descricao">
           <strong>7</strong> credencial(is) processada(s) em
-          <strong>07/08/2026 07:57</strong>.<br>
+          <strong>07/08/2026 08:51</strong>.<br>
           Endereço público: <code>https://carlosandrerodrigues.github.io/credencial-vigilancia</code>
         </p>
         <ul class="resumo-gerado">
             <li>
               <strong>000001</strong> — Carlos André Rodrigues de Santana · Coordenador da Vigilância Sanitária
               · <a href="verificar.html?id=000001">validação</a>
-              · <a href="qrcodes/000001.png">QR</a>
-              · <a href="pdf/000001.pdf">PDF</a>
+              · <a href="qrcodes/000001.png">QR Code</a>
             </li>
             <li>
               <strong>000002</strong> — Cristina Durães Silva · Fiscal Sanitária
               · <a href="verificar.html?id=000002">validação</a>
-              · <a href="qrcodes/000002.png">QR</a>
-              · <a href="pdf/000002.pdf">PDF</a>
+              · <a href="qrcodes/000002.png">QR Code</a>
             </li>
             <li>
               <strong>000003</strong> — Carlusan Martins dos Santos · Fiscal Sanitário
               · <a href="verificar.html?id=000003">validação</a>
-              · <a href="qrcodes/000003.png">QR</a>
-              · <a href="pdf/000003.pdf">PDF</a>
+              · <a href="qrcodes/000003.png">QR Code</a>
             </li>
             <li>
               <strong>000004</strong> — Gleiva Regino de Souza · Fiscal Sanitário
               · <a href="verificar.html?id=000004">validação</a>
-              · <a href="qrcodes/000004.png">QR</a>
-              · <a href="pdf/000004.pdf">PDF</a>
+              · <a href="qrcodes/000004.png">QR Code</a>
             </li>
             <li>
               <strong>000005</strong> — Ronan Souza Ribeiro · Fiscal Sanitário
               · <a href="verificar.html?id=000005">validação</a>
-              · <a href="qrcodes/000005.png">QR</a>
-              · <a href="pdf/000005.pdf">PDF</a>
+              · <a href="qrcodes/000005.png">QR Code</a>
             </li>
             <li>
               <strong>000006</strong> — Daielly Durães Silva · Fiscal Sanitária
               · <a href="verificar.html?id=000006">validação</a>
-              · <a href="qrcodes/000006.png">QR</a>
-              · <a href="pdf/000006.pdf">PDF</a>
+              · <a href="qrcodes/000006.png">QR Code</a>
             </li>
             <li>
               <strong>000007</strong> — Jislene Pereira dos Santos Rodrigues · Fiscal Sanitário
               · <a href="verificar.html?id=000007">validação</a>
-              · <a href="qrcodes/000007.png">QR</a>
-              · <a href="pdf/000007.pdf">PDF</a>
+              · <a href="qrcodes/000007.png">QR Code</a>
             </li>
         </ul>
         <!-- GERADOR:FIM -->
@@ -105,7 +98,7 @@
         <p class="bloco__descricao">
           Preencha os dados abaixo para gerar o registro em JSON. Copie o bloco para
           <code>dados/funcionarios.json</code> (ou baixe a base completa já atualizada) e execute
-          <code>npm run gerar</code> para produzir QR Code e PDF.
+          <code>npm run gerar</code> para produzir o QR Code.
         </p>
 
         <form class="formulario" id="form-cadastro" novalidate>
@@ -163,11 +156,6 @@
               </select>
             </div>
 
-            <div class="campo-form">
-              <label for="c-foto">Arquivo da foto</label>
-              <input id="c-foto" name="foto" placeholder="funcionarios/000008.jpg">
-              <span class="ajuda">Deixe vazio para usar o padrão por registro.</span>
-            </div>
           </div>
 
           <div class="acoes-form">
@@ -191,9 +179,7 @@
         <h2 class="bloco__titulo" id="tit-como">Como emitir uma credencial</h2>
         <ol class="passos">
           <li>Cadastre o servidor no formulário acima e salve o registro em <code>dados/funcionarios.json</code>.</li>
-          <li>Coloque a foto 3x4 em <code>funcionarios/</code> com o nome do registro (ex.: <code>000008.jpg</code>).</li>
-          <li>Execute <code>npm run gerar</code> — QR Code, base de fallback, HTML e PDFs são atualizados.</li>
-          <li>Confira o PDF em <code>pdf/</code> e envie <code>pdf/_todos-os-crachas.pdf</code> para a gráfica.</li>
+          <li>Execute <code>npm run gerar</code> — QR Code, base de fallback e este resumo são atualizados.</li>
           <li>Publique no GitHub Pages (<code>git push</code>) e teste o QR Code com o celular.</li>
         </ol>
       </section>

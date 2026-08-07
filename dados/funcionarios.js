@@ -20,7 +20,7 @@ window.__FUNCIONARIOS__ = {
       "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
     },
     "baseUrl": "https://carlosandrerodrigues.github.io/credencial-vigilancia",
-    "geradoEm": "07/08/2026 07:57"
+    "geradoEm": "07/08/2026 08:51"
   },
   "funcionarios": [
     {
@@ -31,8 +31,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Coordenador da Vigilância Sanitária",
       "vinculo": "Efetivo",
       "matricula": "10016717",
-      "status": "valida",
-      "foto": "funcionarios/000001.jpg"
+      "status": "valida"
     },
     {
       "id": "000002",
@@ -42,8 +41,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitária",
       "vinculo": "Efetiva",
       "matricula": "114840",
-      "status": "valida",
-      "foto": "funcionarios/000002.jpg"
+      "status": "valida"
     },
     {
       "id": "000003",
@@ -53,8 +51,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Efetivo",
       "matricula": "10811",
-      "status": "valida",
-      "foto": "funcionarios/000003.jpg"
+      "status": "valida"
     },
     {
       "id": "000004",
@@ -64,8 +61,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "10016752",
-      "status": "valida",
-      "foto": "funcionarios/000004.jpg"
+      "status": "valida"
     },
     {
       "id": "000005",
@@ -75,8 +71,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "10016753",
-      "status": "valida",
-      "foto": "funcionarios/000005.jpg"
+      "status": "valida"
     },
     {
       "id": "000006",
@@ -86,8 +81,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitária",
       "vinculo": "Efetiva",
       "matricula": "114198",
-      "status": "valida",
-      "foto": "funcionarios/000006.jpg"
+      "status": "valida"
     },
     {
       "id": "000007",
@@ -97,8 +91,7 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "",
-      "status": "valida",
-      "foto": "funcionarios/000007.jpg"
+      "status": "valida"
     }
   ]
 };

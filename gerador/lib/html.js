@@ -63,8 +63,7 @@ window.__FUNCIONARIOS__ = ${JSON.stringify({ meta, funcionarios }, null, 2)};
         (f) => `            <li>
               <strong>${esc(f.id)}</strong> — ${esc(f.nome)} · ${esc(f.cargo)}
               · <a href="verificar.html?id=${esc(f.id)}">validação</a>
-              · <a href="qrcodes/${esc(f.id)}.png">QR</a>
-              · <a href="pdf/${esc(f.id)}.pdf">PDF</a>
+              · <a href="qrcodes/${esc(f.id)}.png">QR Code</a>
             </li>`
       )
       .join('\n');

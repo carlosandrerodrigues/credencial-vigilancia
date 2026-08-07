@@ -1,4 +1,7 @@
-# assets/img
+# Imagens do sistema
 
-Pasta reservada para imagens adicionais (marcas, fundos).
-O brasao e os icones do sistema sao vetoriais e ficam em assets/js/icones.js.
+- `logo.png` — brasao da Prefeitura Municipal de Taguatinga, usado no topo
+  do painel e da tela de verificacao.
+
+Os demais icones (selo de situacao e icones de campo) sao vetoriais e ficam
+em `assets/js/icones.js`.

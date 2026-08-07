@@ -2,9 +2,9 @@
 
 Emissão automatizada de credenciais funcionais da **Vigilância Sanitária da Prefeitura Municipal de Taguatinga/TO**.
 
-Um único comando gera **QR Code**, **página de validação online** e **PDF do crachá pronto para a gráfica** (formato CR80, com sangria e marcas de corte).
+Um único comando gera o **QR Code** de cada servidor e a **página de validação online** que aparece quando alguém escaneia esse QR Code pelo celular.
 
-> **100% gratuito e sem dependências externas.** Não usa banco de dados, Firebase, Supabase, API paga nem framework. Apenas Node.js, HTML, CSS, JavaScript e duas bibliotecas de código aberto (`qrcode` e `pdfkit`).
+> **100% gratuito e sem dependências externas.** Não usa banco de dados, Firebase, Supabase, API paga nem framework. Apenas Node.js, HTML, CSS, JavaScript e uma biblioteca de código aberto (`qrcode`).
 
 ---
 
@@ -14,15 +14,13 @@ Um único comando gera **QR Code**, **página de validação online** e **PDF do
 2. [Instalação](#2-instalação)
 3. [Comandos](#3-comandos)
 4. [Cadastrar um funcionário](#4-cadastrar-um-funcionário)
-5. [Fotos dos servidores](#5-fotos-dos-servidores)
-6. [Gerar QR Codes e PDFs](#6-gerar-qr-codes-e-pdfs)
-7. [Publicar no GitHub Pages](#7-publicar-no-github-pages)
-8. [Alterar o usuário do GitHub](#8-alterar-o-usuário-do-github)
-9. [Enviar para a gráfica](#9-enviar-para-a-gráfica)
-10. [Estrutura do projeto](#10-estrutura-do-projeto)
-11. [Campos do funcionário](#11-campos-do-funcionário)
-12. [Personalização visual](#12-personalização-visual)
-13. [Solução de problemas](#13-solução-de-problemas)
+5. [Gerar os QR Codes](#5-gerar-os-qr-codes)
+6. [Publicar no GitHub Pages](#6-publicar-no-github-pages)
+7. [Alterar o usuário do GitHub](#7-alterar-o-usuário-do-github)
+8. [Estrutura do projeto](#8-estrutura-do-projeto)
+9. [Campos do funcionário](#9-campos-do-funcionário)
+10. [Personalização visual](#10-personalização-visual)
+11. [Solução de problemas](#11-solução-de-problemas)
 
 ---
 
@@ -32,11 +30,11 @@ Um único comando gera **QR Code**, **página de validação online** e **PDF do
 dados/funcionarios.json          (fonte única de dados)
             │
             ▼   npm run gerar
-   ┌────────┴─────────┬──────────────────┬────────────────────┐
-   ▼                  ▼                  ▼                    ▼
-qrcodes/*.png    pdf/*.pdf        dados/funcionarios.js    index.html
-(300x300, H)     (CR80 frente     (espelho para uso        (resumo da
-                  e verso)         offline via file://)     geração)
+   ┌────────┴─────────┬────────────────────────┐
+   ▼                  ▼                        ▼
+qrcodes/*.png    dados/funcionarios.js    index.html
+(300x300, H)     (espelho para uso        (resumo da
+                  offline via file://)     geração)
 ```
 
 Ao escanear o QR Code, qualquer celular (Samsung, Motorola, Xiaomi, Realme, LG, iPhone, Poco…) abre:
@@ -69,11 +67,11 @@ node --version
 
 | Comando | O que faz |
 | --- | --- |
-| `npm run gerar` | Executa todo o pipeline: valida a base, gera QR Codes, atualiza JSON/HTML e produz os PDFs. |
-| `npm run cadastrar` | Cadastro guiado de um novo servidor pelo terminal, com validação de CPF e datas. |
+| `npm run gerar` | Executa todo o pipeline: valida a base, gera os QR Codes e atualiza o JSON e o HTML. |
+| `npm run cadastrar` | Cadastro guiado de um novo servidor pelo terminal, com validação de CPF. |
 | `npm start` | Sobe um servidor local em `http://localhost:4173` para testar como ficará no GitHub Pages. |
 | `npm run dev` | Gera tudo e já abre o servidor local. |
-| `npm run limpar` | Apaga apenas os artefatos gerados (QR Codes, PDFs e o espelho de dados). |
+| `npm run limpar` | Apaga apenas os artefatos gerados (QR Codes e o espelho de dados). |
 
 ---
 
@@ -113,8 +111,7 @@ Abra `dados/funcionarios.json` e acrescente um objeto ao final da lista `funcion
   "cargo": "Fiscal Sanitário",
   "vinculo": "Efetivo",
   "matricula": "000130",
-  "status": "valida",
-  "foto": "funcionarios/000008.jpg"
+  "status": "valida"
 }
 ```
 
@@ -122,16 +119,7 @@ O campo `id` é o número que vai no QR Code (`?id=000008`) e deve ter **6 dígi
 
 ---
 
-## 5. Fotos dos servidores
-
-- Coloque os arquivos na pasta `funcionarios/`, nomeados pelo registro: `000001.jpg`, `000002.jpg`…
-- Formatos aceitos: **JPG ou PNG** (o PDFKit não lê WEBP, HEIC ou SVG).
-- Proporção **3x4**; tamanho mínimo recomendado **480 × 600 px** — abaixo disso o gerador avisa que a foto não alcança 300 dpi no tamanho impresso.
-- Se a foto não existir, o sistema **não quebra**: usa um avatar vetorial com as iniciais do servidor, tanto na página quanto no PDF.
-
----
-
-## 6. Gerar QR Codes e PDFs
+## 5. Gerar os QR Codes
 
 ```bash
 npm run gerar
@@ -142,9 +130,6 @@ Produz:
 | Saída | Descrição |
 | --- | --- |
 | `qrcodes/000001.png` | PNG 300 × 300 px, correção de erro **H** (30%), margem de 2 módulos. |
-| `pdf/000001.pdf` | Crachá individual: página 1 = frente, página 2 = verso. |
-| `pdf/_todos-os-crachas.pdf` | Todos os crachás em sequência, no mesmo arquivo. |
-| `pdf/_folha-impressao-A4.pdf` | Folha A4 com 10 cartões por página (2 × 5), pronta para impressão duplex. |
 | `dados/funcionarios.js` | Espelho da base que faz as páginas funcionarem mesmo abertas via `file://`. |
 | `index.html` | Bloco “Última geração” atualizado automaticamente. |
 
@@ -159,10 +144,10 @@ O terminal também mostra o endereço na rede local (ex.: `http://192.168.0.10:4
 
 ---
 
-## 7. Publicar no GitHub Pages
+## 6. Publicar no GitHub Pages
 
 1. Crie um repositório **público** chamado `credencial-vigilancia`.
-2. Ajuste o seu usuário em `config.json` (veja o item 8) e rode `npm run gerar` novamente.
+2. Ajuste o seu usuário em `config.json` (veja o item 7) e rode `npm run gerar` novamente.
 3. Envie os arquivos:
 
 ```bash
@@ -185,11 +170,11 @@ https://SEU_USUARIO.github.io/credencial-vigilancia/
 
 6. Teste escaneando um QR Code de `qrcodes/`.
 
-> O arquivo `.nojekyll` já está incluído — ele é necessário para o GitHub Pages servir arquivos que começam com `_` (como `pdf/_todos-os-crachas.pdf`).
+> O arquivo `.nojekyll` já está incluído — sem ele o GitHub Pages ignora arquivos e pastas que começam com `_`.
 
 ---
 
-## 8. Alterar o usuário do GitHub
+## 7. Alterar o usuário do GitHub
 
 Edite **apenas uma linha** em `config.json`:
 
@@ -218,32 +203,7 @@ Esse campo tem prioridade sobre `githubUser`.
 
 ---
 
-## 9. Enviar para a gráfica
-
-Especificação técnica dos PDFs gerados:
-
-| Item | Valor |
-| --- | --- |
-| Formato | **CR80 / ISO 7810 ID-1** — 85,60 × 53,98 mm |
-| Sangria (bleed) | 3 mm em cada lado (página final: 91,60 × 59,98 mm) |
-| Margem de segurança | 3 mm a partir da linha de corte |
-| Marcas de corte | Sim, desenhadas na área de sangria |
-| Resolução | Conteúdo vetorial (resolução infinita); foto e QR Code em 300 dpi ou mais |
-| Cores | RGB — peça ao fornecedor a conversão para CMYK no RIP, se necessário |
-| Páginas | Ímpares = frente, pares = verso |
-
-**O que enviar:**
-
-- Impressão em cartão PVC (uma peça por vez): `pdf/000001.pdf`, `pdf/000002.pdf`…
-- Impressão em lote: `pdf/_todos-os-crachas.pdf`
-- Impressão própria em papel/adesivo A4: `pdf/_folha-impressao-A4.pdf`
-  *Duplex com virada pela borda longa — as colunas do verso já vão invertidas para casar com a frente.*
-
-Ajuste a sangria e as marcas de corte, se a gráfica pedir outro padrão, em `templates/credencial.template.json`.
-
----
-
-## 10. Estrutura do projeto
+## 8. Estrutura do projeto
 
 ```
 credencial-vigilancia/
@@ -254,34 +214,29 @@ credencial-vigilancia/
 │   │   └── painel.css            Painel administrativo
 │   ├── js/
 │   │   ├── core.js               Namespace VS e constantes
-│   │   ├── format.js             Formatação (CPF, datas, iniciais) — usado no navegador E no Node
-│   │   ├── icones.js             Brasão, selos e ícones em SVG inline
+│   │   ├── format.js             Formatação (CPF, datas) — usado no navegador E no Node
+│   │   ├── icones.js             Selos de situação e ícones de campo em SVG inline
 │   │   ├── dados.js              Carregamento da base (fetch + fallback file://)
 │   │   ├── credencial.js         Componente visual da credencial
 │   │   ├── verificar.js          Controlador de verificar.html
 │   │   └── painel.js             Controlador de index.html
-│   └── img/                      Imagens adicionais (opcional)
+│   └── img/
+│       └── logo.png              Brasão da prefeitura
 ├── dados/
 │   ├── funcionarios.json         FONTE ÚNICA DE DADOS
 │   └── funcionarios.js           Espelho gerado automaticamente
-├── funcionarios/                 Fotos 3x4 (000001.jpg, 000002.jpg…)
 ├── gerador/
 │   ├── index.js                  npm run gerar — orquestrador do pipeline
 │   ├── cadastrar.js              npm run cadastrar
 │   ├── limpar.js                 npm run limpar
 │   ├── servidor.js               npm start
 │   └── lib/
-│       ├── config.js             Caminhos, medidas e leitura de configuração
+│       ├── config.js             Caminhos e leitura de configuração
 │       ├── log.js                Saída colorida no terminal
 │       ├── dados.js              Normalização e validação da base
 │       ├── qrcode.js             Geração dos PNGs
-│       ├── desenho.js            Primitivas vetoriais (brasão, avatar, marcas de corte)
-│       ├── pdf.js                Layout do crachá (frente, verso, lote, folha A4)
 │       └── html.js               Atualização do index.html e do espelho de dados
-├── pdf/                          PDFs gerados
 ├── qrcodes/                      QR Codes gerados
-├── templates/
-│   └── credencial.template.json  Medidas, cores e tipografia do crachá
 ├── config.json                   Usuário do GitHub e textos institucionais
 ├── index.html                    Painel administrativo
 ├── verificar.html                Página única de validação
@@ -292,19 +247,20 @@ credencial-vigilancia/
 
 ---
 
-## 11. Campos do funcionário
+## 9. Campos do funcionário
 
 | Campo | Obrigatório | Observação |
 | --- | --- | --- |
 | `id` | Sim | 6 dígitos, único. É o `?id=` do QR Code. |
 | `nome` | Sim | Nome completo. |
 | `cpf` | Sim | Gravado completo; **exibido mascarado** (`817.***.***-34`). |
-| `endereco` | Não | Endereço residencial. |
+| `endereco` | Não | Endereço exibido na credencial. |
 | `cargo` | Sim | Cargo ou função. |
-| `vinculo` | Não | Efetivo, Comissionado, Contratado, Cedido… |
+| `vinculo` | Não | Efetivo, Efetiva, Comissionado, Contratado, Cedido… |
 | `matricula` | Sim | Matrícula funcional. |
 | `status` | Sim | `valida` ou `revogada`. |
-| `foto` | Não | Caminho do arquivo. Padrão: `funcionarios/<id>.jpg`. |
+
+A credencial **não tem prazo de validade**: vale enquanto o `status` não for trocado para `revogada`.
 
 **Situação exibida na validação:**
 
@@ -322,32 +278,31 @@ Para exibir o CPF completo, mude em `config.json`:
 
 ---
 
-## 12. Personalização visual
+## 10. Personalização visual
 
 | O que mudar | Onde |
 | --- | --- |
 | Textos institucionais e rodapé | `config.json` → `orgao` e `credencial` |
-| Cores, fontes e medidas do crachá impresso | `templates/credencial.template.json` |
-| Cores e espaçamentos das páginas web | `assets/css/base.css` → bloco `:root` |
-| Brasão / marca | `assets/js/icones.js` (web) e `gerador/lib/desenho.js` (PDF) |
-| Layout da credencial na tela | `assets/js/credencial.js` |
+| Cores e espaçamentos das páginas | `assets/css/base.css` → bloco `:root` |
+| Aparência da credencial na tela | `assets/css/credencial.css` |
+| Brasão / marca | `assets/img/logo.png` |
+| Campos exibidos na credencial | `assets/js/credencial.js` |
 
 Paleta institucional padrão: azul `#0B3C8C`, verde `#16A34A`, âmbar `#D97706`.
 
 ---
 
-## 13. Solução de problemas
+## 11. Solução de problemas
 
 | Sintoma | Causa e solução |
 | --- | --- |
 | QR Code abre "CREDENCIAL NÃO ENCONTRADA" | O `id` não existe em `dados/funcionarios.json`, ou o `npm run gerar` não foi executado depois do cadastro. |
 | QR Code aponta para `SEU_USUARIO` | Falta trocar `githubUser` em `config.json` e rodar `npm run gerar` de novo. |
 | Página em branco no GitHub Pages | Aguarde 2 minutos após o push e confira em *Settings → Pages* se a branch é `main` / root. |
-| "foto ausente" no terminal | O arquivo não está em `funcionarios/` com o nome do registro. O crachá sai com o avatar de iniciais. |
+| Alterou o JSON e o site não mudou | Rode `npm run gerar` e faça `git push`. O GitHub Pages serve o que está commitado. |
 | "CPF não passa na validação" | Aviso, não erro. Confira os dígitos verificadores do CPF digitado. |
-| Foto sai serrilhada no PDF | Imagem menor que 480 × 600 px. Substitua por uma de maior resolução. |
 | `EADDRINUSE` ao rodar `npm start` | Porta ocupada. Use `PORT=4174 npm start`. |
-| Erro `Cannot find module 'pdfkit'` | Rode `npm install`. |
+| `npm start` não encontra o package.json | Você está na pasta errada. Entre em `credencial-vigilancia/` antes de rodar. |
 | Página abre pelo Explorer mas sem dados | Normal em `file://`. O espelho `dados/funcionarios.js` resolve — basta ter rodado `npm run gerar`. |
 
 ---
