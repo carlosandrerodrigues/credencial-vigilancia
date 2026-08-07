@@ -18,8 +18,8 @@ window.__FUNCIONARIOS__ = {
       "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
     },
     "observacao": "Fonte única de dados do sistema. Edite este arquivo (ou use 'npm run cadastrar') e depois execute 'npm run gerar'.",
-    "baseUrl": "https://SEU_USUARIO.github.io/credencial-vigilancia",
-    "geradoEm": "06/08/2026 21:04",
+    "baseUrl": "https://carlosandrerodrigues.github.io/credencial-vigilancia",
+    "geradoEm": "07/08/2026 00:53",
     "mascararCPF": true
   },
   "funcionarios": [

@@ -51,7 +51,10 @@
     }
 
     try {
-      const [{ meta }, funcionario] = await Promise.all([Dados.carregar(), Dados.buscarPorId(id)]);
+      // Sequencial de propósito: o cache de Dados só existe depois do primeiro
+      // carregar(). Em paralelo, as duas chamadas baixariam o JSON duas vezes.
+      const { meta } = await Dados.carregar();
+      const funcionario = await Dados.buscarPorId(id);
 
       if (!funcionario) {
         alvo.innerHTML = Credencial.naoEncontrada(id);

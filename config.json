@@ -1,7 +1,7 @@
 {
   "_comentario": "Altere APENAS o campo githubUser para o seu usuário do GitHub. Se usar domínio próprio, preencha baseUrlPersonalizada.",
 
-  "githubUser": "SEU_USUARIO",
+  "githubUser": "carlosandrerodrigues",
   "repositorio": "credencial-vigilancia",
   "baseUrlPersonalizada": "",
 
