@@ -47,7 +47,7 @@ async function principal() {
 
   /* ------------------------------------------------------- 2. Base */
   Log.titulo('Base de funcionários');
-  const { meta, funcionarios, erros, avisos } = Dados.carregar(config);
+  const { meta, funcionarios, erros, avisos } = Dados.carregar();
 
   avisos.forEach((a) => Log.aviso(a));
   if (erros.length) {

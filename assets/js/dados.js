@@ -74,30 +74,20 @@
         cargo: String(f.cargo || '').trim(),
         vinculo: String(f.vinculo || '').trim(),
         matricula: String(f.matricula || '').trim(),
-        portaria: String(f.portaria || '').trim(),
-        emissao: f.emissao || '',
-        validade: f.validade || '',
         status: f.status || SITUACAO.VALIDA,
         foto: f.foto || `${CAMINHOS.fotos}${id}.jpg`
       };
     },
 
     /**
-     * Determina a situação atual considerando status manual + validade.
+     * Determina a situação atual a partir do status gravado na base.
+     * Sem prazo de validade, só a revogação manual invalida a credencial.
      * @param {object} f
-     * @param {Date} [hoje]
      * @returns {string} valor de VS.SITUACAO
      */
-    situacao(f, hoje = new Date()) {
+    situacao(f) {
       if (!f) return SITUACAO.NAO_ENCONTRADA;
-      if (f.status === SITUACAO.REVOGADA) return SITUACAO.REVOGADA;
-      const validade = Format.paraData(f.validade);
-      if (validade) {
-        // A credencial vale até o fim do dia da validade.
-        const limite = new Date(validade.getFullYear(), validade.getMonth(), validade.getDate(), 23, 59, 59);
-        if (hoje > limite) return SITUACAO.VENCIDA;
-      }
-      return SITUACAO.VALIDA;
+      return f.status === SITUACAO.REVOGADA ? SITUACAO.REVOGADA : SITUACAO.VALIDA;
     },
 
     /** @private Carrega o JSON por fetch. */

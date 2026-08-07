@@ -27,10 +27,13 @@
     rodape2: 'Emitida pela Prefeitura Municipal de Taguatinga/TO.'
   };
 
-  /** Situações possíveis de uma credencial. */
+  /**
+   * Situações possíveis de uma credencial.
+   * Não existe 'vencida': a credencial não tem prazo de validade —
+   * ela vale enquanto não for revogada.
+   */
   VS.SITUACAO = {
     VALIDA: 'valida',
-    VENCIDA: 'vencida',
     REVOGADA: 'revogada',
     NAO_ENCONTRADA: 'nao_encontrada'
   };
@@ -38,7 +41,6 @@
   /** Metadados de apresentação de cada situação (rótulo, cor, ícone). */
   VS.SITUACAO_INFO = {
     valida: { rotulo: 'CREDENCIAL VÁLIDA', tema: 'ok', icone: 'check' },
-    vencida: { rotulo: 'CREDENCIAL VENCIDA', tema: 'alerta', icone: 'alerta' },
     revogada: { rotulo: 'CREDENCIAL REVOGADA', tema: 'erro', icone: 'erro' },
     nao_encontrada: { rotulo: 'CREDENCIAL NÃO ENCONTRADA', tema: 'erro', icone: 'erro' }
   };

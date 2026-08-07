@@ -18,10 +18,8 @@ const { CAMINHOS, lerJSON, gravarJSON } = require('./config');
  * @param {object} config
  * @returns {object}
  */
-function normalizar(bruto, config) {
+function normalizar(bruto) {
   const id = Format.normalizarId(bruto.id);
-  const emissao = bruto.emissao || Format.paraISO(new Date());
-  const anos = config?.credencial?.validadeAnos ?? 2;
   return {
     id,
     nome: String(bruto.nome || '').trim(),
@@ -30,9 +28,6 @@ function normalizar(bruto, config) {
     cargo: String(bruto.cargo || '').trim(),
     vinculo: String(bruto.vinculo || '').trim(),
     matricula: String(bruto.matricula || '').trim(),
-    portaria: String(bruto.portaria || '').trim(),
-    emissao,
-    validade: bruto.validade || Format.somarAnosISO(emissao, anos),
     status: bruto.status || 'valida',
     foto: bruto.foto || `funcionarios/${id}.jpg`
   };
@@ -55,9 +50,6 @@ function validar(f, idsVistos) {
   if (!f.cargo) erros.push(`${onde}: cargo/função obrigatório.`);
   if (!f.matricula) avisos.push(`${onde}: matrícula não informada.`);
   if (!Format.cpfValido(f.cpf)) avisos.push(`${onde}: CPF ${f.cpf} não passa na validação dos dígitos.`);
-  if (!Format.paraData(f.emissao)) erros.push(`${onde}: data de emissão inválida.`);
-  if (!Format.paraData(f.validade)) erros.push(`${onde}: data de validade inválida.`);
-  if (!f.portaria) avisos.push(`${onde}: ato de nomeação (portaria) não informado.`);
 
   const foto = path.join(CAMINHOS.raiz, f.foto);
   if (!fs.existsSync(foto)) {
@@ -72,10 +64,9 @@ function validar(f, idsVistos) {
 const Dados = {
   /**
    * Carrega e valida a base inteira.
-   * @param {object} config conteúdo de config.json
    * @returns {{meta: object, funcionarios: object[], erros: string[], avisos: string[]}}
    */
-  carregar(config) {
+  carregar() {
     const bruto = lerJSON(CAMINHOS.json);
     if (!Array.isArray(bruto.funcionarios)) {
       throw new Error('dados/funcionarios.json deve conter a lista "funcionarios".');
@@ -87,7 +78,7 @@ const Dados = {
     const funcionarios = [];
 
     for (const registro of bruto.funcionarios) {
-      const f = normalizar(registro, config);
+      const f = normalizar(registro);
       const resultado = validar(f, idsVistos);
       erros.push(...resultado.erros);
       avisos.push(...resultado.avisos);
@@ -111,12 +102,11 @@ const Dados = {
   /**
    * Acrescenta um servidor à base (usado por `npm run cadastrar`).
    * @param {object} registro
-   * @param {object} config
    * @returns {object} registro normalizado
    */
-  acrescentar(registro, config) {
+  acrescentar(registro) {
     const bruto = lerJSON(CAMINHOS.json);
-    const novo = normalizar(registro, config);
+    const novo = normalizar(registro);
     if (bruto.funcionarios.some((f) => Format.normalizarId(f.id) === novo.id)) {
       throw new Error(`Já existe um servidor com o registro ${novo.id}.`);
     }

@@ -8,11 +8,6 @@
 
   const VS = global.VS || (global.VS = {});
 
-  const MESES = [
-    'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
-    'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
-  ];
-
   const Format = {
     /**
      * Escapa caracteres perigosos antes de injetar texto em HTML.
@@ -76,17 +71,6 @@
     },
 
     /**
-     * Converte para data por extenso: '15 de abril de 2024'.
-     * @param {string|Date} valor
-     * @returns {string}
-     */
-    formatarDataExtenso(valor) {
-      const d = Format.paraData(valor);
-      if (!d) return '—';
-      return `${d.getDate()} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
-    },
-
-    /**
      * Interpreta datas em 'AAAA-MM-DD' como data local (evita o
      * deslocamento de fuso que o construtor Date aplica ao formato ISO).
      * @param {string|Date} valor
@@ -99,29 +83,6 @@
       if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
       const d = new Date(valor);
       return isNaN(d) ? null : d;
-    },
-
-    /**
-     * Soma anos a uma data e devolve no formato 'AAAA-MM-DD'.
-     * @param {string|Date} valor
-     * @param {number} anos
-     * @returns {string}
-     */
-    somarAnosISO(valor, anos) {
-      const d = Format.paraData(valor) || new Date();
-      const r = new Date(d.getFullYear() + Number(anos || 0), d.getMonth(), d.getDate());
-      return Format.paraISO(r);
-    },
-
-    /**
-     * Devolve 'AAAA-MM-DD' de uma data.
-     * @param {Date} d
-     * @returns {string}
-     */
-    paraISO(d) {
-      const mes = String(d.getMonth() + 1).padStart(2, '0');
-      const dia = String(d.getDate()).padStart(2, '0');
-      return `${d.getFullYear()}-${mes}-${dia}`;
     },
 
     /**

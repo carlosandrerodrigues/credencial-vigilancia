@@ -18,7 +18,6 @@
 
   "credencial": {
     "mascararCPF": true,
-    "validadeAnos": 2,
     "tituloCartao": "CREDENCIAL FUNCIONAL"
   },
 

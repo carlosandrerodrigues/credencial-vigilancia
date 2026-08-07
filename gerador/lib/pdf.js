@@ -192,9 +192,10 @@ function desenharFrente(doc, f, tema, pos) {
   doc.rect(x - s, faixaY, L + 2 * s, hFaixa + s).fill(cores.azulTenue);
   Desenho.linha(doc, x - s, faixaY, x + L + s, faixaY, '#C9D8EE', 0.5);
 
+  // Título à esquerda e registro à direita, na mesma linha da faixa.
   Desenho.texto(doc, credencial.tituloCartao || 'CREDENCIAL FUNCIONAL', {
     x: x + m,
-    y: faixaY + 4.4,
+    y: faixaY + hFaixa / 2 - tamanhos.faixa * 0.72,
     largura: L / 2,
     fonte: fontes.negrito,
     tamanho: tamanhos.faixa,
@@ -202,32 +203,14 @@ function desenharFrente(doc, f, tema, pos) {
     espacamento: 0.6
   });
   Desenho.texto(doc, `REGISTRO Nº ${f.id}`, {
-    x: x + m,
-    y: faixaY + 11.6,
-    largura: L / 2,
-    fonte: fontes.regular,
-    tamanho: tamanhos.micro + 0.4,
-    cor: cores.textoSuave,
-    espacamento: 0.3
-  });
-  Desenho.texto(doc, 'VÁLIDA ATÉ', {
     x: x + L / 2,
-    y: faixaY + 4.6,
-    largura: L / 2 - m,
-    fonte: fontes.regular,
-    tamanho: tamanhos.micro + 0.4,
-    cor: cores.rotulo,
-    alinhamento: 'right',
-    espacamento: 0.3
-  });
-  Desenho.texto(doc, Format.formatarData(f.validade), {
-    x: x + L / 2,
-    y: faixaY + 10.6,
+    y: faixaY + hFaixa / 2 - (tamanhos.micro + 0.4) * 0.72,
     largura: L / 2 - m,
     fonte: fontes.negrito,
-    tamanho: tamanhos.faixa + 0.4,
+    tamanho: tamanhos.micro + 0.4,
     cor: cores.azulEscuro,
-    alinhamento: 'right'
+    alinhamento: 'right',
+    espacamento: 0.3
   });
 }
 
@@ -301,34 +284,14 @@ function desenharVerso(doc, f, tema, pos) {
   let cursor = y + hCab + 7;
 
   cursor += Desenho.campo(doc, { rotulo: 'Vínculo', valor: f.vinculo, x: colX, y: cursor, largura: colL, tema }) + 4;
-  cursor += Desenho.campo(doc, {
-    rotulo: 'Ato de nomeação',
-    valor: f.portaria,
-    x: colX,
-    y: cursor,
-    largura: colL,
-    tema,
-    linhas: 2
-  }) + 4;
-  cursor += Desenho.campo(doc, {
+  Desenho.campo(doc, {
     rotulo: 'Endereço',
     valor: f.endereco,
     x: colX,
     y: cursor,
     largura: colL,
     tema,
-    linhas: 2
-  }) + 4;
-
-  const meia = (colL - 8) / 2;
-  Desenho.campo(doc, { rotulo: 'Emissão', valor: Format.formatarData(f.emissao), x: colX, y: cursor, largura: meia, tema });
-  Desenho.campo(doc, {
-    rotulo: 'Validade',
-    valor: Format.formatarData(f.validade),
-    x: colX + meia + 8,
-    y: cursor,
-    largura: meia,
-    tema
+    linhas: 3
   });
 
   // Rodapé institucional

@@ -54,13 +54,7 @@
         { icone: 'local', rotulo: 'ENDEREÇO', valor: funcionario.endereco },
         { icone: 'maleta', rotulo: 'CARGO/FUNÇÃO', valor: funcionario.cargo },
         { icone: 'vinculo', rotulo: 'VÍNCULO', valor: funcionario.vinculo },
-        { icone: 'cracha', rotulo: 'MATRÍCULA', valor: funcionario.matricula },
-        { icone: 'selo', rotulo: 'ATO DE NOMEAÇÃO', valor: funcionario.portaria },
-        {
-          icone: 'calendario',
-          rotulo: 'VALIDADE',
-          valor: `${Format.formatarData(funcionario.emissao)} a ${Format.formatarData(funcionario.validade)}`
-        }
+        { icone: 'cracha', rotulo: 'MATRÍCULA', valor: funcionario.matricula }
       ];
 
       return `

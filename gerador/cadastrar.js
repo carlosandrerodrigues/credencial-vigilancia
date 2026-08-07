@@ -110,7 +110,6 @@ async function principal() {
 
   try {
     const proximo = Dados.proximoId();
-    const hoje = Format.paraISO(new Date());
 
     const registro = {
       id: await perguntar(rl, 'Registro (6 dígitos)', {
@@ -125,24 +124,15 @@ async function principal() {
       endereco: await perguntar(rl, 'Endereço completo'),
       cargo: await perguntar(rl, 'Cargo/Função', { obrigatorio: true }),
       vinculo: await perguntar(rl, 'Vínculo', { padrao: 'Efetivo' }),
-      matricula: await perguntar(rl, 'Matrícula', { obrigatorio: true }),
-      portaria: await perguntar(rl, 'Ato de nomeação (portaria)'),
-      emissao: await perguntar(rl, 'Data de emissão (AAAA-MM-DD)', {
-        padrao: hoje,
-        validar: (v) => (Format.paraData(v) ? true : 'Data inválida. Use AAAA-MM-DD.')
-      })
+      matricula: await perguntar(rl, 'Matrícula', { obrigatorio: true })
     };
 
-    registro.validade = await perguntar(rl, 'Data de validade (AAAA-MM-DD)', {
-      padrao: Format.somarAnosISO(registro.emissao, config.credencial.validadeAnos),
-      validar: (v) => (Format.paraData(v) ? true : 'Data inválida. Use AAAA-MM-DD.')
-    });
     registro.status = 'valida';
     registro.foto = await perguntar(rl, 'Arquivo da foto', {
       padrao: `funcionarios/${Format.normalizarId(registro.id)}.jpg`
     });
 
-    const salvo = Dados.acrescentar(registro, config);
+    const salvo = Dados.acrescentar(registro);
 
     Log.titulo('Servidor cadastrado');
     Log.ok(`Registro ${salvo.id} — ${salvo.nome}`);

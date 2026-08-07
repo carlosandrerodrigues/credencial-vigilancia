@@ -20,7 +20,7 @@ window.__FUNCIONARIOS__ = {
       "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
     },
     "baseUrl": "https://carlosandrerodrigues.github.io/credencial-vigilancia",
-    "geradoEm": "07/08/2026 01:20"
+    "geradoEm": "07/08/2026 07:57"
   },
   "funcionarios": [
     {
@@ -31,9 +31,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Coordenador da Vigilância Sanitária",
       "vinculo": "Efetivo",
       "matricula": "10016717",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000001.jpg"
     },
@@ -45,9 +42,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitária",
       "vinculo": "Efetiva",
       "matricula": "114840",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000002.jpg"
     },
@@ -59,9 +53,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Efetivo",
       "matricula": "10811",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000003.jpg"
     },
@@ -73,9 +64,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "10016752",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000004.jpg"
     },
@@ -87,9 +75,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "10016753",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000005.jpg"
     },
@@ -101,9 +86,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitária",
       "vinculo": "Efetiva",
       "matricula": "114198",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000006.jpg"
     },
@@ -115,9 +97,6 @@ window.__FUNCIONARIOS__ = {
       "cargo": "Fiscal Sanitário",
       "vinculo": "Contratado",
       "matricula": "",
-      "portaria": "",
-      "emissao": "2026-08-07",
-      "validade": "2028-08-07",
       "status": "valida",
       "foto": "funcionarios/000007.jpg"
     }

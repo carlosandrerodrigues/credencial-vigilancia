@@ -85,7 +85,7 @@ node --version
 npm run cadastrar
 ```
 
-O assistente pergunta cada campo, sugere o próximo registro livre, calcula a validade automaticamente, valida o CPF pelos dígitos verificadores e, ao final, oferece rodar a geração completa.
+O assistente pergunta cada campo, sugere o próximo registro livre, valida o CPF pelos dígitos verificadores e, ao final, oferece rodar a geração completa.
 
 ### Opção B — pelo painel no navegador
 
@@ -113,9 +113,6 @@ Abra `dados/funcionarios.json` e acrescente um objeto ao final da lista `funcion
   "cargo": "Fiscal Sanitário",
   "vinculo": "Efetivo",
   "matricula": "000130",
-  "portaria": "Portaria nº 052/2026, de 10 de janeiro de 2026",
-  "emissao": "2026-01-10",
-  "validade": "2028-01-10",
   "status": "valida",
   "foto": "funcionarios/000008.jpg"
 }
@@ -301,14 +298,11 @@ credencial-vigilancia/
 | --- | --- | --- |
 | `id` | Sim | 6 dígitos, único. É o `?id=` do QR Code. |
 | `nome` | Sim | Nome completo. |
-| `cpf` | Sim | Gravado completo; **exibido mascarado** (`***.456.789-**`). |
+| `cpf` | Sim | Gravado completo; **exibido mascarado** (`817.***.***-34`). |
 | `endereco` | Não | Endereço residencial. |
 | `cargo` | Sim | Cargo ou função. |
 | `vinculo` | Não | Efetivo, Comissionado, Contratado, Cedido… |
 | `matricula` | Sim | Matrícula funcional. |
-| `portaria` | Não | Ato de nomeação. |
-| `emissao` | Sim | `AAAA-MM-DD`. Preenchida com a data atual se omitida. |
-| `validade` | Sim | `AAAA-MM-DD`. Calculada com `credencial.validadeAnos` se omitida. |
 | `status` | Sim | `valida` ou `revogada`. |
 | `foto` | Não | Caminho do arquivo. Padrão: `funcionarios/<id>.jpg`. |
 
@@ -316,8 +310,7 @@ credencial-vigilancia/
 
 | Situação | Quando ocorre | Cor |
 | --- | --- | --- |
-| CREDENCIAL VÁLIDA | Status `valida` e dentro do prazo | Verde |
-| CREDENCIAL VENCIDA | Data de validade ultrapassada | Âmbar |
+| CREDENCIAL VÁLIDA | Status `valida` | Verde |
 | CREDENCIAL REVOGADA | Status `revogada` | Vermelho |
 | CREDENCIAL NÃO ENCONTRADA | `id` inexistente na base | Vermelho |
 
@@ -333,7 +326,7 @@ Para exibir o CPF completo, mude em `config.json`:
 
 | O que mudar | Onde |
 | --- | --- |
-| Textos institucionais, rodapé, validade padrão | `config.json` → `orgao` e `credencial` |
+| Textos institucionais e rodapé | `config.json` → `orgao` e `credencial` |
 | Cores, fontes e medidas do crachá impresso | `templates/credencial.template.json` |
 | Cores e espaçamentos das páginas web | `assets/css/base.css` → bloco `:root` |
 | Brasão / marca | `assets/js/icones.js` (web) e `gerador/lib/desenho.js` (PDF) |

@@ -44,7 +44,7 @@
         <p class="cartao__nome">${Format.escaparHTML(f.nome)}</p>
         <p class="cartao__cargo">${Format.escaparHTML(f.cargo)}</p>
         <p class="cartao__meta">Registro ${Format.escaparHTML(f.id)}${f.matricula ? ` &middot; Matrícula ${Format.escaparHTML(f.matricula)}` : ''}</p>
-        <p class="cartao__meta">Validade: ${Format.formatarData(f.validade)}</p>
+        <p class="cartao__meta">${Format.escaparHTML(f.vinculo)}</p>
         <span class="etiqueta etiqueta--${info.tema}">${Format.escaparHTML(info.rotulo)}</span>
       </div>
       <div class="cartao__acoes">
@@ -104,8 +104,6 @@
   function coletarFormulario(form) {
     const d = Object.fromEntries(new FormData(form).entries());
     const id = Format.normalizarId(d.id) || proximoId();
-    const emissao = d.emissao || Format.paraISO(new Date());
-    const validade = d.validade || Format.somarAnosISO(emissao, 2);
     return {
       id,
       nome: d.nome.trim(),
@@ -114,9 +112,6 @@
       cargo: d.cargo.trim(),
       vinculo: d.vinculo.trim(),
       matricula: d.matricula.trim(),
-      portaria: d.portaria.trim(),
-      emissao,
-      validade,
       status: d.status || 'valida',
       foto: (d.foto || '').trim() || `${CAMINHOS.fotos}${id}.jpg`
     };
@@ -162,8 +157,8 @@
    * @returns {object}
    */
   function limpar(f) {
-    const { id, nome, cpf, endereco, cargo, vinculo, matricula, portaria, emissao, validade, status, foto } = f;
-    return { id, nome, cpf, endereco, cargo, vinculo, matricula, portaria, emissao, validade, status, foto };
+    const { id, nome, cpf, endereco, cargo, vinculo, matricula, status, foto } = f;
+    return { id, nome, cpf, endereco, cargo, vinculo, matricula, status, foto };
   }
 
   /**
@@ -261,13 +256,9 @@
     });
   }
 
-  /** Preenche os campos automáticos do formulário (id, datas). */
+  /** Preenche os campos automáticos do formulário (o registro). */
   function preencherPadroes() {
-    const form = document.getElementById('form-cadastro');
-    const hoje = Format.paraISO(new Date());
-    form.elements.id.value = proximoId();
-    form.elements.emissao.value = hoje;
-    form.elements.validade.value = Format.somarAnosISO(hoje, 2);
+    document.getElementById('form-cadastro').elements.id.value = proximoId();
   }
 
   /** Ponto de entrada. */
