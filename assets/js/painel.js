@@ -43,7 +43,7 @@
       <div class="cartao__corpo">
         <p class="cartao__nome">${Format.escaparHTML(f.nome)}</p>
         <p class="cartao__cargo">${Format.escaparHTML(f.cargo)}</p>
-        <p class="cartao__meta">Registro ${Format.escaparHTML(f.id)} &middot; Matrícula ${Format.escaparHTML(f.matricula)}</p>
+        <p class="cartao__meta">Registro ${Format.escaparHTML(f.id)}${f.matricula ? ` &middot; Matrícula ${Format.escaparHTML(f.matricula)}` : ''}</p>
         <p class="cartao__meta">Validade: ${Format.formatarData(f.validade)}</p>
         <span class="etiqueta etiqueta--${info.tema}">${Format.escaparHTML(info.rotulo)}</span>
       </div>

@@ -49,8 +49,8 @@
     },
 
     /**
-     * Oculta parcialmente o CPF, preservando os dígitos centrais.
-     * Padrão adotado pela LGPD/CNJ: ***.456.789-**
+     * Oculta parcialmente o CPF, preservando o prefixo e os dois
+     * dígitos verificadores: 817.***.***-34
      * @param {string} valor
      * @param {boolean} mascarar  quando false, devolve o CPF completo formatado
      * @returns {string}
@@ -59,7 +59,7 @@
       const completo = Format.formatarCPF(valor);
       if (!mascarar) return completo;
       const partes = completo.split(/[.-]/);
-      return `***.${partes[1]}.${partes[2]}-**`;
+      return `${partes[0]}.***.***-${partes[3]}`;
     },
 
     /**

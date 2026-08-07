@@ -85,7 +85,7 @@
     <div class="credencial__resumo">
       <p class="credencial__nome">${Format.escaparHTML(funcionario.nome)}</p>
       <p class="credencial__cargo">${Format.escaparHTML(funcionario.cargo)}</p>
-      <p class="credencial__matricula">Matrícula ${Format.escaparHTML(funcionario.matricula)} &middot; Registro nº ${Format.escaparHTML(funcionario.id)}</p>
+      <p class="credencial__matricula">${funcionario.matricula ? `Matrícula ${Format.escaparHTML(funcionario.matricula)} &middot; ` : ''}Registro nº ${Format.escaparHTML(funcionario.id)}</p>
     </div>
   </section>
 
