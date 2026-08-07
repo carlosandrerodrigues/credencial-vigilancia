@@ -1,0 +1,125 @@
+/**
+ * funcionarios.js — ARQUIVO GERADO AUTOMATICAMENTE. NÃO EDITE.
+ * Espelho de dados/funcionarios.json usado quando a página é aberta
+ * diretamente do disco (file://), onde o fetch() é bloqueado pelo navegador.
+ * Gerado por: npm run gerar
+ */
+window.__FUNCIONARIOS__ = {
+  "meta": {
+    "versao": "1.0.0",
+    "orgao": {
+      "prefeitura": "PREFEITURA MUNICIPAL DE",
+      "municipio": "TAGUATINGA",
+      "uf": "TOCANTINS",
+      "ufSigla": "TO",
+      "setor": "VIGILÂNCIA SANITÁRIA",
+      "lema": "O PROGRESSO CONTINUA",
+      "rodape1": "Esta credencial é de uso pessoal e intransferível.",
+      "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
+    },
+    "observacao": "Fonte única de dados do sistema. Edite este arquivo (ou use 'npm run cadastrar') e depois execute 'npm run gerar'.",
+    "baseUrl": "https://SEU_USUARIO.github.io/credencial-vigilancia",
+    "geradoEm": "06/08/2026 21:04",
+    "mascararCPF": true
+  },
+  "funcionarios": [
+    {
+      "id": "000001",
+      "nome": "Maria Luiza Silva",
+      "cpf": "123.456.789-09",
+      "endereco": "Rua das Flores, nº 123, Centro - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Fiscal Sanitária",
+      "vinculo": "Efetivo",
+      "matricula": "000123",
+      "portaria": "Portaria nº 045/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000001.jpg"
+    },
+    {
+      "id": "000002",
+      "nome": "João Batista Ferreira",
+      "cpf": "234.567.890-92",
+      "endereco": "Avenida Tocantins, nº 480, Setor Aeroporto - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Fiscal Sanitário",
+      "vinculo": "Efetivo",
+      "matricula": "000124",
+      "portaria": "Portaria nº 046/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000002.jpg"
+    },
+    {
+      "id": "000003",
+      "nome": "Ana Cláudia Monteiro",
+      "cpf": "345.678.901-75",
+      "endereco": "Rua Sete de Setembro, nº 77, Centro - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Coordenadora de Vigilância Sanitária",
+      "vinculo": "Comissionado",
+      "matricula": "000125",
+      "portaria": "Portaria nº 047/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000003.jpg"
+    },
+    {
+      "id": "000004",
+      "nome": "Rafael Augusto Nogueira",
+      "cpf": "456.789.012-49",
+      "endereco": "Rua José Bonifácio, nº 210, Setor Sul - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Fiscal Sanitário",
+      "vinculo": "Efetivo",
+      "matricula": "000126",
+      "portaria": "Portaria nº 048/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000004.jpg"
+    },
+    {
+      "id": "000005",
+      "nome": "Patrícia Gomes de Sousa",
+      "cpf": "567.890.123-03",
+      "endereco": "Rua das Palmeiras, nº 55, Setor Industrial - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Agente de Endemias",
+      "vinculo": "Efetivo",
+      "matricula": "000127",
+      "portaria": "Portaria nº 049/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000005.jpg"
+    },
+    {
+      "id": "000006",
+      "nome": "Carlos Eduardo Lima",
+      "cpf": "678.901.234-69",
+      "endereco": "Avenida Brasil, nº 1002, Centro - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Fiscal Sanitário",
+      "vinculo": "Contratado",
+      "matricula": "000128",
+      "portaria": "Portaria nº 050/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000006.jpg"
+    },
+    {
+      "id": "000007",
+      "nome": "Juliana Alves Pereira",
+      "cpf": "789.012.345-05",
+      "endereco": "Rua Duque de Caxias, nº 318, Setor Norte - Taguatinga/TO - CEP 77.295-000",
+      "cargo": "Técnica em Vigilância Sanitária",
+      "vinculo": "Efetivo",
+      "matricula": "000129",
+      "portaria": "Portaria nº 051/2024, de 15 de abril de 2024",
+      "emissao": "2026-01-05",
+      "validade": "2028-01-05",
+      "status": "valida",
+      "foto": "funcionarios/000007.jpg"
+    }
+  ]
+};

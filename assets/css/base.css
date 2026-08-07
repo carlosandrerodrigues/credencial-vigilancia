@@ -1,0 +1,191 @@
+/* =====================================================================
+   base.css — Reset, tokens de design e utilitários
+   Sistema de Credenciais · Vigilância Sanitária · Taguatinga/TO
+   ===================================================================== */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* Paleta institucional */
+  --azul-900: #062A62;
+  --azul-800: #08306F;
+  --azul-700: #0B3C8C;
+  --azul-600: #114FAE;
+  --azul-500: #1D66CC;
+  --azul-100: #E8F0FB;
+  --azul-050: #F4F8FE;
+
+  --verde-600: #15803D;
+  --verde-500: #16A34A;
+  --verde-100: #E7F8EE;
+
+  --ambar-600: #B45309;
+  --ambar-500: #D97706;
+  --ambar-100: #FEF3E2;
+
+  --vermelho-600: #B91C1C;
+  --vermelho-500: #DC2626;
+  --vermelho-100: #FDECEC;
+
+  --cinza-900: #111827;
+  --cinza-700: #374151;
+  --cinza-600: #4B5563;
+  --cinza-500: #6B7280;
+  --cinza-300: #D1D5DB;
+  --cinza-200: #E5E7EB;
+  --cinza-100: #F3F4F6;
+  --branco: #FFFFFF;
+
+  /* Tipografia */
+  --fonte: "Segoe UI", "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --fonte-mono: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+  /* Espaçamento */
+  --esp-1: 4px;
+  --esp-2: 8px;
+  --esp-3: 12px;
+  --esp-4: 16px;
+  --esp-5: 20px;
+  --esp-6: 24px;
+  --esp-8: 32px;
+  --esp-10: 40px;
+
+  /* Formas e profundidade */
+  --raio-sm: 8px;
+  --raio-md: 12px;
+  --raio-lg: 18px;
+  --raio-xl: 24px;
+  --raio-pill: 999px;
+
+  --sombra-sm: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .10);
+  --sombra-md: 0 4px 8px -2px rgba(16, 24, 40, .10), 0 2px 4px -2px rgba(16, 24, 40, .06);
+  --sombra-lg: 0 12px 28px -6px rgba(8, 48, 111, .18), 0 4px 10px -4px rgba(16, 24, 40, .10);
+  --sombra-xl: 0 24px 48px -12px rgba(8, 48, 111, .22);
+
+  --transicao: 180ms cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;   /* impede o zoom automático de texto no iOS */
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--fonte);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cinza-900);
+  background: var(--azul-050);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;               /* nunca gerar barra horizontal */
+}
+
+h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img, svg { max-width: 100%; display: block; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--azul-600); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+:focus-visible {
+  outline: 3px solid var(--azul-500);
+  outline-offset: 2px;
+  border-radius: var(--raio-sm);
+}
+
+/* ---------- Fundo institucional ---------- */
+.fundo {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(1200px 420px at 50% -180px, rgba(29, 102, 204, .18), transparent 70%),
+    linear-gradient(180deg, var(--azul-050) 0%, #EEF4FC 100%);
+  padding: var(--esp-5) var(--esp-4) var(--esp-10);
+}
+
+/* ---------- Utilitários ---------- */
+.container {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.somente-leitor {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[hidden] { display: none !important; }
+
+/* ---------- Botões ---------- */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--esp-2);
+  padding: 10px 16px;
+  min-height: 44px;                 /* alvo de toque confortável */
+  border: 1px solid var(--cinza-300);
+  border-radius: var(--raio-md);
+  background: var(--branco);
+  color: var(--cinza-700);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--transicao), border-color var(--transicao),
+              transform var(--transicao), box-shadow var(--transicao);
+}
+.botao:hover { background: var(--cinza-100); text-decoration: none; }
+.botao:active { transform: translateY(1px); }
+
+.botao--primario {
+  background: linear-gradient(180deg, var(--azul-600), var(--azul-700));
+  border-color: var(--azul-700);
+  color: var(--branco);
+  box-shadow: var(--sombra-sm);
+}
+.botao--primario:hover { background: linear-gradient(180deg, var(--azul-500), var(--azul-600)); }
+
+.botao--suave { background: var(--azul-100); border-color: transparent; color: var(--azul-700); }
+.botao--suave:hover { background: #DCE8F9; }
+
+/* ---------- Etiquetas de situação ---------- */
+.etiqueta {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--raio-pill);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.etiqueta--ok    { background: var(--verde-100);    color: var(--verde-600); }
+.etiqueta--alerta{ background: var(--ambar-100);    color: var(--ambar-600); }
+.etiqueta--erro  { background: var(--vermelho-100); color: var(--vermelho-600); }
+
+/* ---------- Acessibilidade e impressão ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .fundo { background: none; padding: 0; }
+  .nao-imprimir { display: none !important; }
+}

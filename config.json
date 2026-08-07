@@ -1,0 +1,33 @@
+{
+  "_comentario": "Altere APENAS o campo githubUser para o seu usuário do GitHub. Se usar domínio próprio, preencha baseUrlPersonalizada.",
+
+  "githubUser": "SEU_USUARIO",
+  "repositorio": "credencial-vigilancia",
+  "baseUrlPersonalizada": "",
+
+  "orgao": {
+    "prefeitura": "PREFEITURA MUNICIPAL DE",
+    "municipio": "TAGUATINGA",
+    "uf": "TOCANTINS",
+    "ufSigla": "TO",
+    "setor": "VIGILÂNCIA SANITÁRIA",
+    "lema": "O PROGRESSO CONTINUA",
+    "rodape1": "Esta credencial é de uso pessoal e intransferível.",
+    "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
+  },
+
+  "credencial": {
+    "mascararCPF": true,
+    "validadeAnos": 2,
+    "tituloCartao": "CREDENCIAL FUNCIONAL"
+  },
+
+  "impressao": {
+    "larguraMM": 85.6,
+    "alturaMM": 53.98,
+    "sangriaMM": 3,
+    "margemSeguraMM": 3,
+    "dpiAlvo": 300,
+    "gerarArquivoUnico": true
+  }
+}

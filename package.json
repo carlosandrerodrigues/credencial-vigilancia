@@ -1,0 +1,28 @@
+{
+  "name": "credencial-vigilancia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de emissão de credenciais funcionais da Vigilância Sanitária - Prefeitura Municipal de Taguatinga/TO",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "gerar": "node gerador/index.js",
+    "cadastrar": "node gerador/cadastrar.js",
+    "limpar": "node gerador/limpar.js",
+    "start": "node gerador/servidor.js",
+    "dev": "node gerador/index.js && node gerador/servidor.js"
+  },
+  "keywords": [
+    "credencial",
+    "vigilancia-sanitaria",
+    "qrcode",
+    "pdf",
+    "github-pages"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "pdfkit": "^0.15.1",
+    "qrcode": "^1.5.4"
+  }
+}
