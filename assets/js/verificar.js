@@ -2,7 +2,7 @@
  * verificar.js
  * Controlador da página verificar.html.
  *
- * Fluxo: lê ?id=000001 da URL -> busca na base -> renderiza a credencial.
+ * Fluxo: lê ?id=<identificador> da URL -> busca dados/<id>.json -> renderiza.
  * Uma única página atende todos os servidores cadastrados.
  */
 (function (global) {

@@ -74,11 +74,23 @@ const servidor = http.createServer((req, res) => {
   fs.createReadStream(arquivo).pipe(res);
 });
 
+/**
+ * Um identificador real, para o exemplo de validação não cair em uma
+ * credencial inexistente.
+ * @returns {string}
+ */
+function idDeExemplo() {
+  const pasta = path.join(RAIZ, 'dados');
+  if (!fs.existsSync(pasta)) return '';
+  const arquivo = fs.readdirSync(pasta).find((a) => a.endsWith('.json') && !a.startsWith('_'));
+  return arquivo ? arquivo.replace(/\.json$/, '') : '';
+}
+
 servidor.listen(PORTA, () => {
   Log.banner('Servidor local', 'Simula o GitHub Pages para testes');
   Log.titulo('Endereços');
   Log.ok(`Painel      : http://localhost:${PORTA}/painel.html  (só aqui — não vai para o GitHub)`);
-  Log.ok(`Validação   : http://localhost:${PORTA}/verificar.html?id=000001`);
+  Log.ok(`Validação   : http://localhost:${PORTA}/verificar.html?id=${idDeExemplo()}`);
   enderecosLocais().forEach((ip) => Log.info(`Na rede local: http://${ip}:${PORTA}/ (teste o QR pelo celular)`));
   Log.info('Encerre com Ctrl+C.');
 });
