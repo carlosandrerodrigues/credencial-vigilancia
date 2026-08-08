@@ -4,7 +4,7 @@
  *
  *  - dados/funcionarios.js : espelho da base em formato de script, usado
  *    automaticamente quando a página é aberta por file:// (fetch bloqueado);
- *  - index.html : bloco de resumo entre os marcadores GERADOR:INICIO/FIM.
+ *  - painel.html: bloco de resumo entre os marcadores GERADOR:INICIO/FIM.
  */
 'use strict';
 
@@ -44,18 +44,18 @@ window.__FUNCIONARIOS__ = ${JSON.stringify({ meta, funcionarios }, null, 2)};
   },
 
   /**
-   * Atualiza o bloco de resumo do index.html.
+   * Atualiza o bloco de resumo do painel.html.
    * @param {object[]} funcionarios
    * @param {object} info {baseUrl, geradoEm}
    * @returns {string} caminho do arquivo
    */
   atualizarIndex(funcionarios, info) {
-    const html = fs.readFileSync(CAMINHOS.indexHtml, 'utf8');
+    const html = fs.readFileSync(CAMINHOS.painelHtml, 'utf8');
     const inicio = html.indexOf(MARCA_INICIO);
     const fim = html.indexOf(MARCA_FIM);
 
     if (inicio === -1 || fim === -1) {
-      throw new Error('Marcadores GERADOR:INICIO/GERADOR:FIM não encontrados em index.html.');
+      throw new Error('Marcadores GERADOR:INICIO/GERADOR:FIM não encontrados em painel.html.');
     }
 
     const linhas = funcionarios
@@ -80,8 +80,8 @@ ${linhas}
         ${MARCA_FIM}`;
 
     const atualizado = html.slice(0, inicio) + bloco + html.slice(fim + MARCA_FIM.length);
-    fs.writeFileSync(CAMINHOS.indexHtml, atualizado, 'utf8');
-    return CAMINHOS.indexHtml;
+    fs.writeFileSync(CAMINHOS.painelHtml, atualizado, 'utf8');
+    return CAMINHOS.painelHtml;
   }
 };
 

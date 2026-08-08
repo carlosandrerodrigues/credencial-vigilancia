@@ -1,6 +1,9 @@
 /**
  * painel.js
- * Controlador da página index.html (painel administrativo).
+ * Controlador da página painel.html (painel administrativo).
+ *
+ * Esta página fica fora do que vai para o GitHub Pages: roda só na máquina
+ * do coordenador, por 'npm start'. Ver .gitignore.
  *
  * Responsabilidades:
  *  - listar os servidores cadastrados com QR Code e link de validação;

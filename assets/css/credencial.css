@@ -10,6 +10,13 @@
 
 /* ---------- Cartão ---------- */
 .credencial {
+  /* Medidas do brasão. Ficam aqui porque três regras dependem delas:
+     o tamanho da imagem, o quanto ela avança para fora da faixa azul e
+     o recuo da linha de situação, que precisa desviar do brasão. */
+  --marca-largura: 118px;
+  --marca-avanco: 42px;
+  --marca-recuo: calc(var(--esp-5) + var(--marca-largura) + var(--esp-4));
+
   background: var(--branco);
   border-radius: var(--raio-xl);
   box-shadow: var(--sombra-xl);
@@ -29,15 +36,22 @@
   align-items: center;
   gap: var(--esp-4);
   padding: var(--esp-4) var(--esp-5);
-  background: var(--azul-050);
-  border-bottom: 1px solid rgba(11, 60, 140, .12);
+  background: var(--azul-500);
 }
 
+/* A margem inferior negativa encolhe a altura que o brasão ocupa dentro do
+   flex. A faixa azul fecha acima dele e a imagem avança sobre o branco. */
 .credencial__marca {
   flex: 0 0 auto;
-  width: 74px;
+  width: var(--marca-largura);
   height: auto;
+  margin-bottom: calc(var(--marca-avanco) * -1);
+  position: relative;
+  z-index: 2;
+  background: var(--branco);
+  padding: 1px;
   border-radius: var(--raio-md);
+  
 }
 
 .credencial__titulos { min-width: 0; }
@@ -48,7 +62,7 @@
   line-height: 1.3;
   letter-spacing: .01em;
   text-transform: uppercase;
-  color: var(--azul-700);
+  color: white;
 }
 
 .credencial__setor {
@@ -57,17 +71,19 @@
   font-weight: 600;
   letter-spacing: .04em;
   text-transform: uppercase;
-  color: var(--cinza-600);
+  color: white;
 }
 
-/* ---------- Faixa de situação ---------- */
+/* ---------- Faixa de situação ----------
+   Fica abaixo do brasão, não ao lado: o padding superior desvia do avanço
+   dele sobre esta faixa, e só assim sobra largura para centralizar. */
 .credencial__situacao {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--esp-2);
-  padding: var(--esp-4) var(--esp-4);
-  font-size: 15px;
+  padding: calc(var(--marca-avanco) - var(--esp-4) + var(--esp-3)) var(--esp-4) var(--esp-4);
+  font-size: 19px;
   font-weight: 800;
   letter-spacing: .05em;
 }
@@ -105,14 +121,14 @@
   font-weight: 700;
   letter-spacing: .04em;
   text-transform: uppercase;
-  color: var(--azul-800);
+ color: #000;
   padding-top: 5px;
 }
 
 .campo__valor {
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--cinza-700);
+  color: #222;
   line-height: 1.45;
   padding-top: 4px;
   overflow-wrap: anywhere;
@@ -180,11 +196,20 @@
 
 /* ---------- Telas pequenas ---------- */
 @media (max-width: 400px) {
+  /* Redefine as medidas do brasão; o recuo da situação acompanha sozinho. */
+  .credencial {
+    --marca-largura: 94px;
+    --marca-avanco: 34px;
+    --marca-recuo: calc(var(--esp-4) + var(--marca-largura) + var(--esp-3));
+  }
   .credencial__topo { padding: var(--esp-4) var(--esp-4); gap: var(--esp-3); }
-  .credencial__marca { width: 62px; }
   .credencial__orgao { font-size: 12.5px; }
   .credencial__setor { font-size: 11.5px; }
   .credencial__dados { padding: var(--esp-4); }
+
+  /* Só a fonte encolhe; o posicionamento já vem da regra principal.
+     17px mantém "VÁLIDA" e "REVOGADA" em uma linha até 320px de largura. */
+  .credencial__situacao { font-size: 17px; }
 
   /* Mantém as duas colunas do documento; só aperta a tipografia. */
   .credencial__dados { column-gap: var(--esp-2); }

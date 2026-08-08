@@ -20,7 +20,8 @@ Um único comando gera o **QR Code** de cada servidor e a **página de validaç�
 8. [Estrutura do projeto](#8-estrutura-do-projeto)
 9. [Campos do funcionário](#9-campos-do-funcionário)
 10. [Personalização visual](#10-personalização-visual)
-11. [Solução de problemas](#11-solução-de-problemas)
+11. [O que é público e o que não é](#11-o-que-é-público-e-o-que-não-é)
+12. [Solução de problemas](#12-solução-de-problemas)
 
 ---
 
@@ -32,7 +33,7 @@ dados/funcionarios.json          (fonte única de dados)
             ▼   npm run gerar
    ┌────────┴─────────┬────────────────────────┐
    ▼                  ▼                        ▼
-qrcodes/*.png    dados/funcionarios.js    index.html
+qrcodes/*.png    dados/funcionarios.js    painel.html
 (300x300, H)     (espelho para uso        (resumo da
                   offline via file://)     geração)
 ```
@@ -69,7 +70,7 @@ node --version
 | --- | --- |
 | `npm run gerar` | Executa todo o pipeline: valida a base, gera os QR Codes e atualiza o JSON e o HTML. |
 | `npm run cadastrar` | Cadastro guiado de um novo servidor pelo terminal, com validação de CPF. |
-| `npm start` | Sobe um servidor local em `http://localhost:4173` para testar como ficará no GitHub Pages. |
+| `npm start` | Sobe um servidor local em `http://localhost:4173`. O painel administrativo fica em `/painel.html`. |
 | `npm run dev` | Gera tudo e já abre o servidor local. |
 | `npm run limpar` | Apaga apenas os artefatos gerados (QR Codes e o espelho de dados). |
 
@@ -91,7 +92,7 @@ O assistente pergunta cada campo, sugere o próximo registro livre, valida o CPF
 npm start
 ```
 
-Abra `http://localhost:4173`, preencha o formulário **“Cadastrar novo servidor”** e clique em **Gerar registro**. Você pode:
+Abra `http://localhost:4173/painel.html`, preencha o formulário **“Cadastrar novo servidor”** e clique em **Gerar registro**. Você pode:
 
 - **Copiar registro** — cole o bloco dentro da lista `funcionarios` em `dados/funcionarios.json`;
 - **Baixar funcionarios.json completo** — substitua o arquivo em `dados/`.
@@ -131,7 +132,7 @@ Produz:
 | --- | --- |
 | `qrcodes/000001.png` | PNG 300 × 300 px, correção de erro **H** (30%), margem de 2 módulos. |
 | `dados/funcionarios.js` | Espelho da base que faz as páginas funcionarem mesmo abertas via `file://`. |
-| `index.html` | Bloco “Última geração” atualizado automaticamente. |
+| `painel.html` | Bloco “Última geração” atualizado automaticamente. |
 
 Para testar antes de publicar:
 
@@ -219,7 +220,7 @@ credencial-vigilancia/
 │   │   ├── dados.js              Carregamento da base (fetch + fallback file://)
 │   │   ├── credencial.js         Componente visual da credencial
 │   │   ├── verificar.js          Controlador de verificar.html
-│   │   └── painel.js             Controlador de index.html
+│   │   └── painel.js             Controlador de painel.html
 │   └── img/
 │       └── logo.png              Brasão da prefeitura
 ├── dados/
@@ -235,10 +236,11 @@ credencial-vigilancia/
 │       ├── log.js                Saída colorida no terminal
 │       ├── dados.js              Normalização e validação da base
 │       ├── qrcode.js             Geração dos PNGs
-│       └── html.js               Atualização do index.html e do espelho de dados
+│       └── html.js               Atualização do painel.html e do espelho de dados
 ├── qrcodes/                      QR Codes gerados
 ├── config.json                   Usuário do GitHub e textos institucionais
-├── index.html                    Painel administrativo
+├── index.html                    Página pública da raiz (sem dados)
+├── painel.html                   Painel administrativo — NÃO publicado (.gitignore)
 ├── verificar.html                Página única de validação
 ├── .nojekyll                     Necessário para o GitHub Pages
 ├── package.json
@@ -292,7 +294,36 @@ Paleta institucional padrão: azul `#0B3C8C`, verde `#16A34A`, âmbar `#D97706`.
 
 ---
 
-## 11. Solução de problemas
+## 11. O que é público e o que não é
+
+O GitHub Pages é hospedagem estática: **não existe login nem senha**. Tudo que
+for publicado pode ser lido por qualquer pessoa que tenha o endereço.
+
+Por isso o painel administrativo **não é publicado**. Ele está no `.gitignore`
+e só roda na máquina do coordenador:
+
+```bash
+npm start
+```
+
+Depois abra `http://localhost:4173/painel.html`.
+
+| Endereço | Publicado | Conteúdo |
+| --- | --- | --- |
+| `/` | Sim | Página institucional. Sem lista, sem dados, sem formulário. |
+| `/verificar.html?id=000001` | Sim | Uma credencial por vez, com CPF mascarado. |
+| `/dados/funcionarios.json` | Sim | **A base inteira.** Ver aviso abaixo. |
+| `/painel.html` | **Não** | Lista de servidores e cadastro. Só local. |
+
+> **Aviso.** A página de validação precisa ler `dados/funcionarios.json` pelo
+> navegador, então esse arquivo é obrigatoriamente público. Quem digitar esse
+> endereço vê os dados dos servidores — nome, CPF, endereço, cargo, matrícula.
+> Isso é limitação de hospedagem estática, não do sistema. Para eliminar,
+> seria necessário um servidor com autenticação.
+
+---
+
+## 12. Solução de problemas
 
 | Sintoma | Causa e solução |
 | --- | --- |

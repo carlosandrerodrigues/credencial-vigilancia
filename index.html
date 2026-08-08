@@ -3,199 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0B3C8C">
+  <meta name="theme-color" content="#1D66CC">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="Painel de emissão e conferência das credenciais funcionais da Vigilância Sanitária de Taguatinga/TO.">
+  <meta name="description" content="Verificação de credenciais funcionais da Vigilância Sanitária da Prefeitura Municipal de Taguatinga/TO.">
 
-  <title>Painel de Credenciais | Vigilância Sanitária - Taguatinga/TO</title>
+  <title>Verificação de Credenciais | Vigilância Sanitária - Taguatinga/TO</title>
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230B3C8C'/%3E%3Ccircle cx='50' cy='42' r='16' fill='%23FFC42E'/%3E%3Cpath d='M6 62 Q28 42 50 62 Q72 42 94 62 L94 94 L6 94 Z' fill='%2312864B'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/painel.css">
+  <link rel="stylesheet" href="assets/css/credencial.css">
 </head>
 <body>
+  <!--
+    Página pública da raiz do site.
+
+    Existe só para quem apagar o final do endereço não cair num 404. Não lista
+    servidores, não consulta a base e não tem formulário: o painel
+    administrativo (painel.html) fica fora do que é publicado, e roda apenas
+    na máquina do coordenador com "npm start".
+  -->
   <main class="fundo">
-    <div class="container">
-
-      <header class="painel__topo">
-        <img class="painel__marca" id="marca" src="assets/img/logo.png" alt="Brasão da Prefeitura Municipal de Taguatinga">
-        <div>
-          <p class="painel__titulo">Prefeitura Municipal de Taguatinga - Tocantins</p>
-          <p class="painel__subtitulo">Vigilância Sanitária · Painel de credenciais funcionais</p>
-        </div>
-      </header>
-
-      <!-- ============================ Servidores ============================ -->
-      <section class="bloco" aria-labelledby="tit-lista">
-        <h2 class="bloco__titulo" id="tit-lista">Servidores credenciados</h2>
-        <p class="bloco__descricao">
-          Endereço público de validação: <code id="base-url">—</code>
-        </p>
-
-        <div class="bloco__barra">
-          <label class="somente-leitor" for="filtro">Filtrar servidores</label>
-          <input class="busca" id="filtro" type="search" placeholder="Buscar por nome, cargo, matrícula ou registro…" autocomplete="off">
-          <span class="contador" id="contador">—</span>
-        </div>
-
-        <div class="lista" id="lista"></div>
-      </section>
-
-      <!-- ====================== Resumo gerado pelo build ==================== -->
-      <section class="bloco" aria-labelledby="tit-build">
-        <h2 class="bloco__titulo" id="tit-build">Última geração</h2>
-        <p class="bloco__descricao">Bloco atualizado automaticamente pelo comando <code>npm run gerar</code>.</p>
-        <!-- GERADOR:INICIO -->
-        <p class="bloco__descricao">
-          <strong>7</strong> credencial(is) processada(s) em
-          <strong>07/08/2026 08:51</strong>.<br>
-          Endereço público: <code>https://carlosandrerodrigues.github.io/credencial-vigilancia</code>
-        </p>
-        <ul class="resumo-gerado">
-            <li>
-              <strong>000001</strong> — Carlos André Rodrigues de Santana · Coordenador da Vigilância Sanitária
-              · <a href="verificar.html?id=000001">validação</a>
-              · <a href="qrcodes/000001.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000002</strong> — Cristina Durães Silva · Fiscal Sanitária
-              · <a href="verificar.html?id=000002">validação</a>
-              · <a href="qrcodes/000002.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000003</strong> — Carlusan Martins dos Santos · Fiscal Sanitário
-              · <a href="verificar.html?id=000003">validação</a>
-              · <a href="qrcodes/000003.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000004</strong> — Gleiva Regino de Souza · Fiscal Sanitário
-              · <a href="verificar.html?id=000004">validação</a>
-              · <a href="qrcodes/000004.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000005</strong> — Ronan Souza Ribeiro · Fiscal Sanitário
-              · <a href="verificar.html?id=000005">validação</a>
-              · <a href="qrcodes/000005.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000006</strong> — Daielly Durães Silva · Fiscal Sanitária
-              · <a href="verificar.html?id=000006">validação</a>
-              · <a href="qrcodes/000006.png">QR Code</a>
-            </li>
-            <li>
-              <strong>000007</strong> — Jislene Pereira dos Santos Rodrigues · Fiscal Sanitário
-              · <a href="verificar.html?id=000007">validação</a>
-              · <a href="qrcodes/000007.png">QR Code</a>
-            </li>
-        </ul>
-        <!-- GERADOR:FIM -->
-      </section>
-
-      <!-- ============================ Cadastro ============================== -->
-      <section class="bloco" aria-labelledby="tit-cadastro">
-        <h2 class="bloco__titulo" id="tit-cadastro">Cadastrar novo servidor</h2>
-        <p class="bloco__descricao">
-          Preencha os dados abaixo para gerar o registro em JSON. Copie o bloco para
-          <code>dados/funcionarios.json</code> (ou baixe a base completa já atualizada) e execute
-          <code>npm run gerar</code> para produzir o QR Code.
-        </p>
-
-        <form class="formulario" id="form-cadastro" novalidate>
-          <ul class="erros" id="erros" hidden></ul>
-
-          <div class="campos">
-            <div class="campo-form">
-              <label for="c-id">Registro (ID)</label>
-              <input id="c-id" name="id" inputmode="numeric" maxlength="6" required>
-              <span class="ajuda">Seis dígitos. Preenchido automaticamente.</span>
-            </div>
-
-            <div class="campo-form">
-              <label for="c-matricula">Matrícula</label>
-              <input id="c-matricula" name="matricula" required>
-            </div>
-
-            <div class="campo-form campo-form--largo">
-              <label for="c-nome">Nome completo</label>
-              <input id="c-nome" name="nome" autocomplete="name" required>
-            </div>
-
-            <div class="campo-form">
-              <label for="c-cpf">CPF</label>
-              <input id="c-cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" required>
-            </div>
-
-            <div class="campo-form">
-              <label for="c-vinculo">Vínculo</label>
-              <select id="c-vinculo" name="vinculo">
-                <option>Efetivo</option>
-                <option>Efetiva</option>
-                <option>Comissionado</option>
-                <option>Contratado</option>
-                <option>Cedido</option>
-                <option>Estágio</option>
-              </select>
-            </div>
-
-            <div class="campo-form campo-form--largo">
-              <label for="c-endereco">Endereço</label>
-              <input id="c-endereco" name="endereco" autocomplete="street-address">
-            </div>
-
-            <div class="campo-form campo-form--largo">
-              <label for="c-cargo">Cargo/Função</label>
-              <input id="c-cargo" name="cargo" required>
-            </div>
-
-            <div class="campo-form">
-              <label for="c-status">Situação</label>
-              <select id="c-status" name="status">
-                <option value="valida">Válida</option>
-                <option value="revogada">Revogada</option>
-              </select>
-            </div>
-
+    <div class="pagina-verificacao">
+      <article class="credencial">
+        <header class="credencial__topo">
+          <img class="credencial__marca" src="assets/img/logo.png"
+               alt="Brasão da Prefeitura Municipal de Taguatinga" decoding="async">
+          <div class="credencial__titulos">
+            <h1 class="credencial__orgao">Prefeitura Municipal de Taguatinga - Tocantins</h1>
+            <p class="credencial__setor">Vigilância Sanitária</p>
           </div>
+        </header>
 
-          <div class="acoes-form">
-            <button class="botao botao--primario" type="submit">Gerar registro</button>
-            <button class="botao" type="reset">Limpar</button>
-          </div>
-        </form>
+        <section class="credencial__aviso">
+          <p><strong>Sistema de verificação de credenciais funcionais.</strong></p>
+          <p>Para conferir a credencial de um servidor, aponte a câmera do
+             celular para o QR Code impresso no crachá dele.</p>
+          <p>Em caso de dúvida sobre a autenticidade de uma credencial, procure
+             a Vigilância Sanitária Municipal.</p>
+        </section>
 
-        <div class="saida" id="saida" hidden>
-          <h3 class="bloco__titulo">Registro gerado</h3>
-          <pre id="saida-registro"></pre>
-          <div class="acoes-form">
-            <button class="botao botao--primario" type="button" id="btn-copiar-registro">Copiar registro</button>
-            <button class="botao" type="button" id="btn-baixar-base">Baixar funcionarios.json completo</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- =========================== Passo a passo ========================== -->
-      <section class="bloco" aria-labelledby="tit-como">
-        <h2 class="bloco__titulo" id="tit-como">Como emitir uma credencial</h2>
-        <ol class="passos">
-          <li>Cadastre o servidor no formulário acima e salve o registro em <code>dados/funcionarios.json</code>.</li>
-          <li>Execute <code>npm run gerar</code> — QR Code, base de fallback e este resumo são atualizados.</li>
-          <li>Publique no GitHub Pages (<code>git push</code>) e teste o QR Code com o celular.</li>
-        </ol>
-      </section>
-
-      <footer class="painel__rodape">
-        Esta credencial é de uso pessoal e intransferível.<br>
-        Emitida pela Prefeitura Municipal de Taguatinga/TO.
-      </footer>
+        <footer class="credencial__rodape">
+          <p>Prefeitura Municipal de Taguatinga/TO</p>
+          <p>Vigilância Sanitária</p>
+        </footer>
+      </article>
     </div>
   </main>
-
-  <script src="assets/js/core.js"></script>
-  <script src="assets/js/format.js"></script>
-  <script src="assets/js/icones.js"></script>
-  <script src="assets/js/dados.js"></script>
-  <script src="assets/js/credencial.js"></script>
-  <script src="assets/js/painel.js"></script>
 </body>
 </html>

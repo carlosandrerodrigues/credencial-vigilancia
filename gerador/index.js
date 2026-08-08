@@ -7,7 +7,7 @@
  *   2. lê, normaliza e valida dados/funcionarios.json
  *   3. gera os QR Codes (PNG 300x300, correção H)
  *   4. regrava o JSON com metadados e o espelho dados/funcionarios.js
- *   5. atualiza o bloco de resumo do index.html
+ *   5. atualiza o bloco de resumo do painel.html
  *   6. imprime o relatório final
  */
 'use strict';

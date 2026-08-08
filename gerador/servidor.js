@@ -77,7 +77,7 @@ const servidor = http.createServer((req, res) => {
 servidor.listen(PORTA, () => {
   Log.banner('Servidor local', 'Simula o GitHub Pages para testes');
   Log.titulo('Endereços');
-  Log.ok(`Painel      : http://localhost:${PORTA}/`);
+  Log.ok(`Painel      : http://localhost:${PORTA}/painel.html  (só aqui — não vai para o GitHub)`);
   Log.ok(`Validação   : http://localhost:${PORTA}/verificar.html?id=000001`);
   enderecosLocais().forEach((ip) => Log.info(`Na rede local: http://${ip}:${PORTA}/ (teste o QR pelo celular)`));
   Log.info('Encerre com Ctrl+C.');

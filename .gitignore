@@ -2,3 +2,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# Painel administrativo: fica FORA do GitHub Pages de proposito.
+# O site publicado nao pode expor a lista de servidores nem o cadastro.
+# Roda so na maquina do coordenador, por "npm start", em /painel.html
+painel.html
