@@ -107,12 +107,11 @@
 
 .campo { display: contents; }
 
+/* Sem placa de fundo: só a silhueta cheia, como no crachá impresso. */
 .campo__icone {
   display: grid;
   place-items: center;
   width: 26px; height: 26px;
-  border-radius: var(--raio-sm);
-  background: var(--azul-100);
   color: var(--azul-700);
 }
 

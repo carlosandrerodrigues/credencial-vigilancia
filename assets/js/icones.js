@@ -33,25 +33,30 @@
     },
 
     /**
-     * Ícones de rótulo de campo (linha fina, estilo institucional).
+     * Ícones de rótulo de campo — silhueta cheia, como no crachá impresso.
+     *
+     * São formas preenchidas, não contornos: os detalhes internos (rosto,
+     * linhas do cartão) são vazados pelo fill-rule "evenodd", que trata os
+     * subcaminhos internos como buracos.
+     *
      * @param {string} nome
      * @returns {string}
      */
     campo(nome) {
       const caminhos = {
-        pessoa: '<circle cx="12" cy="8" r="3.6"/><path d="M4.8 19.5c1.3-3.6 4-5.4 7.2-5.4s5.9 1.8 7.2 5.4"/>',
-        documento: '<rect x="3.2" y="5.2" width="17.6" height="13.6" rx="2.4"/><circle cx="9" cy="11" r="2"/><path d="M5.8 16.4c.8-1.7 1.9-2.5 3.2-2.5s2.4.8 3.2 2.5"/><path d="M14.6 10h4.2M14.6 13.4h4.2"/>',
-        local: '<path d="M12 21s6.6-6.1 6.6-11A6.6 6.6 0 0 0 5.4 10c0 4.9 6.6 11 6.6 11z"/><circle cx="12" cy="10" r="2.4"/>',
-        maleta: '<rect x="3" y="7.4" width="18" height="12.2" rx="2.2"/><path d="M9 7.4V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.4"/><path d="M3 12.6h18"/>',
-        vinculo: '<circle cx="8.4" cy="9" r="2.8"/><circle cx="16" cy="10.4" r="2.4"/><path d="M3.4 19c.9-2.8 2.7-4.2 5-4.2s4.1 1.4 5 4.2"/><path d="M14.6 19c.5-2 1.6-3.1 3.2-3.1 1.4 0 2.4.8 3 2.3"/>',
-        cracha: '<rect x="4" y="4.6" width="16" height="14.8" rx="2.4"/><path d="M8.2 9.4h7.6M8.2 12.6h7.6M8.2 15.8h4.6"/>',
-        selo: '<path d="M12 3.6l2.5 1.9 3.1-.2.6 3 2.3 2.1-1.7 2.6.4 3.1-3 .8-1.8 2.5-2.9-1.1-2.9 1.1-1.8-2.5-3-.8.4-3.1L2.5 10.4l2.3-2.1.6-3 3.1.2z"/><path d="M9.4 12.2l1.8 1.8 3.4-3.6"/>',
-        calendario: '<rect x="3.4" y="5.4" width="17.2" height="15" rx="2.2"/><path d="M3.4 10h17.2M8.4 3.4v4M15.6 3.4v4"/>'
+        pessoa: '<circle cx="12" cy="7.6" r="4"/><path d="M12 13.6c-4.1 0-7.4 2.5-8.2 6.2a.9.9 0 0 0 .9 1.1h14.6a.9.9 0 0 0 .9-1.1c-.8-3.7-4.1-6.2-8.2-6.2z"/>',
+        documento: '<path fill-rule="evenodd" d="M4.6 4.4h14.8a2.4 2.4 0 0 1 2.4 2.4v10.4a2.4 2.4 0 0 1-2.4 2.4H4.6a2.4 2.4 0 0 1-2.4-2.4V6.8a2.4 2.4 0 0 1 2.4-2.4zM8.9 8.2a2.1 2.1 0 1 0 0 4.2 2.1 2.1 0 0 0 0-4.2zm-3.3 8.1c.8-1.9 1.9-2.8 3.3-2.8s2.5.9 3.3 2.8H5.6zm8.9-7.5h5v1.5h-5V8.8zm0 3.5h5v1.5h-5v-1.5z"/>',
+        local: '<path fill-rule="evenodd" d="M12 2.2a7.4 7.4 0 0 0-7.4 7.4c0 5.2 6.4 11.7 6.7 12a1 1 0 0 0 1.4 0c.3-.3 6.7-6.8 6.7-12A7.4 7.4 0 0 0 12 2.2zm0 10a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2z"/>',
+        maleta: '<path fill-rule="evenodd" d="M9.8 2.8a2.4 2.4 0 0 0-2.4 2.4v2H4a2.4 2.4 0 0 0-2.4 2.4v9a2.4 2.4 0 0 0 2.4 2.4h16a2.4 2.4 0 0 0 2.4-2.4v-9A2.4 2.4 0 0 0 20 7.2h-3.4v-2a2.4 2.4 0 0 0-2.4-2.4H9.8zm4.8 4.4v-2H9.4v2h5.2z"/>',
+        vinculo: '<path d="M9.2 11.4a3.3 3.3 0 1 0 0-6.6 3.3 3.3 0 0 0 0 6.6zm7.6.6a2.8 2.8 0 1 0 0-5.6 2.8 2.8 0 0 0 0 5.6zM9.2 13c-3.2 0-5.7 2-6.5 5.6a.9.9 0 0 0 .9 1.1h11.2a.9.9 0 0 0 .9-1.1c-.8-3.6-3.3-5.6-6.5-5.6zm7.6.2c-.7 0-1.3.1-1.9.4 1.2 1.3 2 3 2.4 5.1a2.5 2.5 0 0 1 0 1h4.3a.9.9 0 0 0 .9-1.1c-.7-3.3-2.8-5.4-5.7-5.4z"/>',
+        cracha: '<path fill-rule="evenodd" d="M4.4 3.8h15.2a2.4 2.4 0 0 1 2.4 2.4v11.6a2.4 2.4 0 0 1-2.4 2.4H4.4A2.4 2.4 0 0 1 2 17.8V6.2a2.4 2.4 0 0 1 2.4-2.4zm3.4 4.6h8.4v1.6H7.8V8.4zm0 3.8h8.4v1.6H7.8v-1.6zm0 3.8h5v1.6h-5v-1.6z"/>',
+        selo: '<path fill-rule="evenodd" d="M12 2.2l3 2.3 3.7-.2.7 3.6 2.8 2.5-1.8 3.3.5 3.7-3.6.9-2.2 3-3.1-1.4-3.1 1.4-2.2-3-3.6-.9.5-3.7L1.8 10.4l2.8-2.5.7-3.6 3.7.2 3-2.3zm-2.7 9.4l-1.2 1.2 3.1 3.1 5.4-5.6-1.2-1.2-4.2 4.3-1.9-1.8z"/>',
+        calendario: '<path fill-rule="evenodd" d="M8.2 2.4a.9.9 0 0 1 .9.9v1.3h5.8V3.3a.9.9 0 0 1 1.8 0v1.3h1.7a2.4 2.4 0 0 1 2.4 2.4v2H3.2v-2a2.4 2.4 0 0 1 2.4-2.4h1.7V3.3a.9.9 0 0 1 .9-.9zM3.2 10.8h17.6v7.4a2.4 2.4 0 0 1-2.4 2.4H5.6a2.4 2.4 0 0 1-2.4-2.4v-7.4z"/>'
       };
       const d = caminhos[nome] || caminhos.cracha;
       return `
-<svg class="icone-campo" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-     stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+<svg class="icone-campo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"
+     fill="currentColor">
   ${d}
 </svg>`.trim();
     }
