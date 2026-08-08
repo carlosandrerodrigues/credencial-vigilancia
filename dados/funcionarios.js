@@ -20,7 +20,7 @@ window.__FUNCIONARIOS__ = {
       "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
     },
     "baseUrl": "https://carlosandrerodrigues.github.io/credencial-vigilancia",
-    "geradoEm": "08/08/2026 14:55"
+    "geradoEm": "08/08/2026 15:29"
   },
   "funcionarios": [
     {
