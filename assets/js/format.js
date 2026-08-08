@@ -9,6 +9,9 @@
   const VS = global.VS || (global.VS = {});
 
   const Format = {
+    /** Tamanho dos identificadores sorteados. 36^8 ≈ 2,8 trilhões. */
+    ID_TAMANHO: 8,
+
     /**
      * Escapa caracteres perigosos antes de injetar texto em HTML.
      * @param {*} valor
@@ -86,14 +89,44 @@
     },
 
     /**
-     * Normaliza um identificador para 6 dígitos: 7 -> '000007'.
-     * @param {string|number} valor
-     * @returns {string}
+     * Sanitiza um identificador de credencial.
+     *
+     * O id vem da querystring e é usado para montar o caminho do arquivo
+     * dados/<id>.json. Reduzir a [a-z0-9] aqui é a barreira contra path
+     * traversal (?id=../../algo): tudo que não casa é descartado, e o
+     * resultado só é aceito se tiver o tamanho de um id legítimo.
+     *
+     * @param {string} valor
+     * @returns {string} id válido, ou '' se não for um id
      */
     normalizarId(valor) {
-      const d = Format.somenteDigitos(valor);
-      if (!d) return '';
-      return d.slice(-6).padStart(6, '0');
+      const limpo = String(valor || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+      return limpo.length >= Format.ID_TAMANHO && limpo.length <= 32 ? limpo : '';
+    },
+
+    /**
+     * Sorteia um identificador aleatório e permanente.
+     *
+     * Descarta bytes ≥ 252 porque 256 não é múltiplo de 36: sem isso, as seis
+     * primeiras letras do alfabeto sairiam com frequência maior que as demais.
+     *
+     * @param {number} [tamanho]
+     * @returns {string}
+     */
+    gerarId(tamanho = Format.ID_TAMANHO) {
+      const alfabeto = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      const limite = 256 - (256 % alfabeto.length);
+      let id = '';
+      while (id.length < tamanho) {
+        const bytes = new Uint8Array(tamanho * 2);
+        globalThis.crypto.getRandomValues(bytes);
+        for (const b of bytes) {
+          if (b >= limite) continue;
+          id += alfabeto[b % alfabeto.length];
+          if (id.length === tamanho) break;
+        }
+      }
+      return id;
     },
 
     /**

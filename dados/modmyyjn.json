@@ -1,0 +1,26 @@
+{
+  "id": "modmyyjn",
+  "nome": "Daielly Durães Silva",
+  "cpf": "026.201.081-01",
+  "endereco": "Rua Avenida 12, nº 46 - Setor Norte - Taguatinga/TO - CEP 77320-000",
+  "cargo": "Fiscal Sanitária",
+  "vinculo": "Efetiva",
+  "matricula": "114198",
+  "status": "valida",
+  "meta": {
+    "versao": "1.0.0",
+    "orgao": {
+      "prefeitura": "PREFEITURA MUNICIPAL DE",
+      "municipio": "TAGUATINGA",
+      "uf": "TOCANTINS",
+      "ufSigla": "TO",
+      "setor": "VIGILÂNCIA SANITÁRIA",
+      "lema": "O PROGRESSO CONTINUA",
+      "rodape1": "Esta credencial é de uso pessoal e intransferível.",
+      "rodape2": "Emitida pela Prefeitura Municipal de Taguatinga/TO."
+    },
+    "baseUrl": "https://carlosandrerodrigues.github.io/credencial-vigilancia",
+    "mascararCPF": true,
+    "geradoEm": "08/08/2026 16:14"
+  }
+}

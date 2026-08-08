@@ -2,7 +2,7 @@
 /**
  * cadastrar.js — Cadastro de servidor pelo terminal (`npm run cadastrar`).
  *
- * Pergunta os dados, valida na hora, grava em dados/funcionarios.json
+ * Pergunta os dados, valida na hora, sorteia o identificador e grava em dados/<id>.json
  * e oferece executar a geração completa em seguida.
  */
 'use strict';
@@ -109,13 +109,9 @@ async function principal() {
   const rl = criarLeitor();
 
   try {
-    const proximo = Dados.proximoId();
-
+    // O identificador é sorteado, não escolhido: ele vira o endereço público
+    // da credencial, e um número sequencial deixaria os vizinhos adivinháveis.
     const registro = {
-      id: await perguntar(rl, 'Registro (6 dígitos)', {
-        padrao: proximo,
-        validar: (v) => (/^\d{1,6}$/.test(v) ? true : 'Informe apenas números (até 6 dígitos).')
-      }),
       nome: await perguntar(rl, 'Nome completo', { obrigatorio: true }),
       cpf: await perguntar(rl, 'CPF', {
         obrigatorio: true,
@@ -132,7 +128,7 @@ async function principal() {
     const salvo = Dados.acrescentar(registro);
 
     Log.titulo('Servidor cadastrado');
-    Log.ok(`Registro ${salvo.id} — ${salvo.nome}`);
+    Log.ok(`${salvo.nome} — identificador ${salvo.id} (dados/${salvo.id}.json)`);
     Log.info(`Validação: ${Config.urlValidacao(Config.montarBaseUrl(config), salvo.id)}`);
 
     const gerar = await perguntar(rl, 'Executar "npm run gerar" agora? (s/n)', { padrao: 's' });

@@ -51,17 +51,17 @@
     }
 
     try {
-      // Sequencial de propósito: o cache de Dados só existe depois do primeiro
-      // carregar(). Em paralelo, as duas chamadas baixariam o JSON duas vezes.
-      const { meta } = await Dados.carregar();
-      const funcionario = await Dados.buscarPorId(id);
+      // Uma requisição só: dados/<id>.json traz o servidor e os textos
+      // institucionais juntos. Importa em celular no 4G, no meio da rua.
+      const credencial = await Dados.carregarCredencial(id);
 
-      if (!funcionario) {
+      if (!credencial) {
         alvo.innerHTML = Credencial.naoEncontrada(id);
         document.title = 'Credencial não localizada | Vigilância Sanitária';
         return;
       }
 
+      const { funcionario, meta } = credencial;
       alvo.innerHTML = Credencial.render(funcionario, {
         mascararCPF: meta.mascararCPF !== false,
         orgao: meta.orgao

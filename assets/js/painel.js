@@ -91,12 +91,19 @@
    * ----------------------------------------------------------------- */
 
   /**
-   * Próximo identificador livre, sempre com 6 dígitos.
+   * Sorteia um identificador que ainda não está em uso.
+   *
+   * Sequencial não serve: o id vira o endereço público da credencial, e
+   * 000001..000007 deixaria os colegas adivinháveis a partir de um QR Code só.
    * @returns {string}
    */
-  function proximoId() {
-    const maior = estado.funcionarios.reduce((max, f) => Math.max(max, Number(f.id) || 0), 0);
-    return String(maior + 1).padStart(6, '0');
+  function novoId() {
+    const usados = new Set(estado.funcionarios.map((f) => f.id));
+    let id;
+    do {
+      id = Format.gerarId();
+    } while (usados.has(id));
+    return id;
   }
 
   /**
@@ -106,7 +113,7 @@
    */
   function coletarFormulario(form) {
     const d = Object.fromEntries(new FormData(form).entries());
-    const id = Format.normalizarId(d.id) || proximoId();
+    const id = Format.normalizarId(d.id) || novoId();
     return {
       id,
       nome: d.nome.trim(),
@@ -142,25 +149,13 @@
    */
   function mostrarResultado(registro) {
     const saida = document.getElementById('saida');
-    const baseAtualizada = {
-      meta: { ...estado.meta, geradoEm: '' },
-      funcionarios: [...estado.funcionarios.map(limpar), registro]
-    };
+    const conteudo = JSON.stringify(registro, null, 2);
 
     saida.hidden = false;
-    saida.querySelector('#saida-registro').textContent = JSON.stringify(registro, null, 2);
-    saida.dataset.base = JSON.stringify(baseAtualizada, null, 2);
+    saida.querySelector('#saida-registro').textContent = conteudo;
+    saida.dataset.arquivo = `${registro.id}.json`;
+    saida.dataset.conteudo = conteudo;
     saida.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  /**
-   * Remove campos derivados antes de gravar de volta no JSON.
-   * @param {object} f
-   * @returns {object}
-   */
-  function limpar(f) {
-    const { id, nome, cpf, endereco, cargo, vinculo, matricula, status } = f;
-    return { id, nome, cpf, endereco, cargo, vinculo, matricula, status };
   }
 
   /**
@@ -254,27 +249,28 @@
     });
 
     document.getElementById('btn-baixar-base').addEventListener('click', () => {
-      baixar('funcionarios.json', document.getElementById('saida').dataset.base);
+      const saida = document.getElementById('saida');
+      baixar(saida.dataset.arquivo, saida.dataset.conteudo);
     });
   }
 
   /** Preenche os campos automáticos do formulário (o registro). */
   function preencherPadroes() {
-    document.getElementById('form-cadastro').elements.id.value = proximoId();
+    document.getElementById('form-cadastro').elements.id.value = novoId();
   }
 
   /** Ponto de entrada. */
   async function iniciar() {
     document.getElementById('marca').src = CAMINHOS.logo;
     try {
-      const base = await Dados.carregar();
+      const base = await Dados.carregarIndice();
       estado.meta = base.meta;
       estado.funcionarios = base.funcionarios;
     } catch (erro) {
       VS.log('erro', erro);
       document.getElementById('lista').innerHTML =
-        `<p class="vazio">Não foi possível carregar <code>dados/funcionarios.json</code>. ` +
-        `Execute <code>npm run gerar</code> ou inicie o servidor local com <code>npm start</code>.</p>`;
+        `<p class="vazio">Não foi possível carregar o índice <code>dados/_painel.json</code>. ` +
+        `Execute <code>npm run gerar</code> e abra o painel por <code>npm start</code>.</p>`;
     }
     const base = estado.meta.baseUrl || '(defina githubUser em config.json)';
     document.getElementById('base-url').textContent = base;

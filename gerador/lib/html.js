@@ -1,16 +1,13 @@
 /**
  * html.js
- * Atualização dos artefatos consumidos pelo navegador.
- *
- *  - dados/funcionarios.js : espelho da base em formato de script, usado
- *    automaticamente quando a página é aberta por file:// (fetch bloqueado);
- *  - painel.html: bloco de resumo entre os marcadores GERADOR:INICIO/FIM.
+ * Atualização do bloco de resumo do painel.html, entre os marcadores
+ * GERADOR:INICIO e GERADOR:FIM.
  */
 'use strict';
 
 const fs = require('node:fs');
 const Format = require('../../assets/js/format.js');
-const { CAMINHOS, garantirPasta } = require('./config');
+const { CAMINHOS } = require('./config');
 
 const MARCA_INICIO = '<!-- GERADOR:INICIO -->';
 const MARCA_FIM = '<!-- GERADOR:FIM -->';
@@ -23,26 +20,6 @@ const MARCA_FIM = '<!-- GERADOR:FIM -->';
 const esc = (v) => Format.escaparHTML(v);
 
 const Html = {
-  /**
-   * Grava o espelho JavaScript da base.
-   * @param {object} meta
-   * @param {object[]} funcionarios
-   * @returns {string} caminho do arquivo
-   */
-  gravarFallback(meta, funcionarios) {
-    garantirPasta(CAMINHOS.dados);
-    const conteudo = `/**
- * funcionarios.js — ARQUIVO GERADO AUTOMATICAMENTE. NÃO EDITE.
- * Espelho de dados/funcionarios.json usado quando a página é aberta
- * diretamente do disco (file://), onde o fetch() é bloqueado pelo navegador.
- * Gerado por: npm run gerar
- */
-window.__FUNCIONARIOS__ = ${JSON.stringify({ meta, funcionarios }, null, 2)};
-`;
-    fs.writeFileSync(CAMINHOS.fallbackJs, conteudo, 'utf8');
-    return CAMINHOS.fallbackJs;
-  },
-
   /**
    * Atualiza o bloco de resumo do painel.html.
    * @param {object[]} funcionarios

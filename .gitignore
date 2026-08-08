@@ -7,3 +7,7 @@ Thumbs.db
 # O site publicado nao pode expor a lista de servidores nem o cadastro.
 # Roda so na maquina do coordenador, por "npm start", em /painel.html
 painel.html
+
+# Indice completo consumido pelo painel. Nao vai para o GitHub Pages:
+# e exatamente a lista inteira que um JSON por servidor existe para nao expor.
+dados/_painel.json

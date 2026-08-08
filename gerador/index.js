@@ -4,9 +4,9 @@
  *
  * Pipeline executado (nesta ordem):
  *   1. carrega config.json
- *   2. lê, normaliza e valida dados/funcionarios.json
+ *   2. lê, normaliza e valida todos os dados/<id>.json
  *   3. gera os QR Codes (PNG 300x300, correção H)
- *   4. regrava o JSON com metadados e o espelho dados/funcionarios.js
+ *   4. regrava um JSON por servidor e o índice privado do painel
  *   5. atualiza o bloco de resumo do painel.html
  *   6. imprime o relatório final
  */
@@ -45,46 +45,41 @@ async function principal() {
 
   /* ------------------------------------------------------- 2. Base */
   Log.titulo('Base de funcionários');
-  const { meta, funcionarios, erros, avisos } = Dados.carregar();
+  const { funcionarios, erros, avisos } = Dados.carregar();
 
   avisos.forEach((a) => Log.aviso(a));
   if (erros.length) {
     erros.forEach((e) => Log.erro(e));
-    throw new Error(`${erros.length} erro(s) impedem a geração. Corrija dados/funcionarios.json.`);
+    throw new Error(`${erros.length} erro(s) impedem a geração. Corrija os arquivos em dados/.`);
   }
-  if (!funcionarios.length) throw new Error('Nenhum funcionário cadastrado.');
+  if (!funcionarios.length) throw new Error('Nenhum funcionário cadastrado em dados/.');
   Log.ok(`${funcionarios.length} servidor(es) validado(s).`);
 
   /* ------------------------------------------------------ 3. QR Codes */
   Log.titulo('QR Codes (PNG 300x300 · correção H)');
-  const urls = new Map();
-  const qrcodes = await Qr.gerarTodos(funcionarios, baseUrl, (f, r) => {
-    urls.set(f.id, r.url);
-    Log.ok(`${f.id} → ${rel(r.arquivo)}`);
-  });
+  await Qr.gerarTodos(funcionarios, baseUrl, (f, r) => Log.ok(`${f.id} → ${rel(r.arquivo)}`));
 
-  /* ----------------------------------------- 4. JSON + espelho JS */
+  /* ----------------------------------------- 4. Um JSON por servidor */
   Log.titulo('Dados para o navegador');
-  const metaAtualizada = {
-    ...meta,
-    versao: meta.versao || '1.0.0',
+  const meta = {
+    versao: '1.0.0',
     orgao: config.orgao,
     baseUrl,
     mascararCPF: config.credencial.mascararCPF !== false,
     geradoEm: agora()
   };
-  Dados.salvar(metaAtualizada, funcionarios);
-  Log.ok(`Base normalizada: ${rel(caminhos.json)}`);
-  Log.ok(`Espelho file://  : ${rel(Html.gravarFallback(metaAtualizada, funcionarios))}`);
+  const gravados = Dados.salvar(funcionarios, meta);
+  Log.ok(`${gravados.length} arquivo(s) em ${rel(caminhos.dados)} — um por servidor`);
+  Log.ok(`Índice do painel : ${rel(Dados.salvarIndice(funcionarios, meta))} (não vai para o GitHub)`);
 
   /* ------------------------------------------------------ 5. HTML */
   Log.titulo('Páginas');
-  Log.ok(`Resumo atualizado: ${rel(Html.atualizarIndex(funcionarios, { baseUrl, geradoEm: metaAtualizada.geradoEm }))}`);
+  Log.ok(`Resumo atualizado: ${rel(Html.atualizarIndex(funcionarios, { baseUrl, geradoEm: meta.geradoEm }))}`);
 
   /* ----------------------------------------------------- 6. Relatório */
   Log.titulo('Concluído');
   Log.resumo([
-    `${funcionarios.length} credencial(is) publicada(s) em ${metaAtualizada.geradoEm}`,
+    `${funcionarios.length} credencial(is) publicada(s) em ${meta.geradoEm}`,
     `QR Codes: ${rel(caminhos.qrcodes)}`,
     `Teste local: ${Log.negrito('npm start')} e abra http://localhost:4173`,
     `Exemplo de validação: ${baseUrl}/verificar.html?id=${funcionarios[0].id}`

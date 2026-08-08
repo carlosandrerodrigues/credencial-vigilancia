@@ -2,9 +2,9 @@
 /**
  * limpar.js — Remove os artefatos gerados (`npm run limpar`).
  *
- * Apaga apenas o que o gerador cria: qrcodes/*.png e
- * dados/funcionarios.js. Nunca toca em dados/funcionarios.json,
- * nem no código-fonte.
+ * Apaga apenas o que o gerador cria: qrcodes/*.png e o índice
+ * dados/_painel.json. Nunca toca nos dados/<id>.json dos servidores,
+ * que são a base, nem no código-fonte.
  */
 'use strict';
 
@@ -30,19 +30,19 @@ function limparPasta(pasta, padrao) {
   return total;
 }
 
-Log.banner('Limpeza de artefatos', 'Remove os QR Codes e o espelho de dados');
+Log.banner('Limpeza de artefatos', 'Remove os QR Codes e o índice do painel');
 
 const qr = limparPasta(CAMINHOS.qrcodes, /\.png$/i);
 
-let espelho = 0;
-if (fs.existsSync(CAMINHOS.fallbackJs)) {
-  fs.unlinkSync(CAMINHOS.fallbackJs);
-  espelho = 1;
+let indice = 0;
+if (fs.existsSync(CAMINHOS.indicePainel)) {
+  fs.unlinkSync(CAMINHOS.indicePainel);
+  indice = 1;
 }
 
 Log.titulo('Concluído');
 Log.resumo([
   `${qr} QR Code(s) removido(s) de ${path.relative(RAIZ, CAMINHOS.qrcodes)}`,
-  `${espelho} espelho de dados removido`,
+  `${indice} índice do painel removido`,
   'Execute "npm run gerar" para reconstruir tudo.'
 ]);

@@ -18,8 +18,7 @@ const CAMINHOS = {
   raiz: RAIZ,
   config: path.join(RAIZ, 'config.json'),
   dados: path.join(RAIZ, 'dados'),
-  json: path.join(RAIZ, 'dados', 'funcionarios.json'),
-  fallbackJs: path.join(RAIZ, 'dados', 'funcionarios.js'),
+  indicePainel: path.join(RAIZ, 'dados', '_painel.json'),
   qrcodes: path.join(RAIZ, 'qrcodes'),
   painelHtml: path.join(RAIZ, 'painel.html'),
   assets: path.join(RAIZ, 'assets')

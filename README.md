@@ -28,23 +28,43 @@ Um único comando gera o **QR Code** de cada servidor e a **página de validaç�
 ## 1. Como funciona
 
 ```
-dados/funcionarios.json          (fonte única de dados)
-            │
-            ▼   npm run gerar
-   ┌────────┴─────────┬────────────────────────┐
-   ▼                  ▼                        ▼
-qrcodes/*.png    dados/funcionarios.js    painel.html
-(300x300, H)     (espelho para uso        (resumo da
-                  offline via file://)     geração)
+dados/<id>.json          (um arquivo por servidor — a base)
+        │
+        ▼   npm run gerar
+   ┌────┴─────────────┬────────────────────┐
+   ▼                  ▼                    ▼
+qrcodes/<id>.png   dados/_painel.json   painel.html
+(300x300, H)       (índice privado —    (resumo da
+                    não publicado)       geração)
+```
+
+Cada servidor mora em seu próprio arquivo, nomeado pelo identificador dele:
+
+```
+dados/
+├── if7zrn6l.json
+├── g9c8vm7z.json
+├── 1wamj2od.json
+└── …
 ```
 
 Ao escanear o QR Code, qualquer celular (Samsung, Motorola, Xiaomi, Realme, LG, iPhone, Poco…) abre:
 
 ```
-https://SEU_USUARIO.github.io/credencial-vigilancia/verificar.html?id=000001
+https://SEU_USUARIO.github.io/credencial-vigilancia/verificar.html?id=if7zrn6l
 ```
 
-A página `verificar.html` — **uma só página para todos os servidores** — lê o `?id=` da URL, localiza o registro em `dados/funcionarios.json` e monta a credencial na tela.
+A página `verificar.html` — **uma só página para todos os servidores** — lê o `?id=` da URL, busca **somente** `dados/<id>.json` e monta a credencial na tela.
+
+É uma requisição só, e ela traz exatamente um servidor. Quem tem o QR Code de uma pessoa alcança o arquivo dela — e nada além.
+
+### Os identificadores
+
+São sorteados: 8 caracteres, letras minúsculas e números (`if7zrn6l`, `g9c8vm7z`).
+
+Nunca sequenciais. Com `000001`, `000002`, `000003`, quem recebesse um único QR Code adivinharia os colegas trocando o número. Com 8 caracteres aleatórios são cerca de 2,8 trilhões de combinações.
+
+**O identificador é permanente.** Depois de gerado, nunca mude: ele já está impresso nos crachás.
 
 ---
 
@@ -72,7 +92,7 @@ node --version
 | `npm run cadastrar` | Cadastro guiado de um novo servidor pelo terminal, com validação de CPF. |
 | `npm start` | Sobe um servidor local em `http://localhost:4173`. O painel administrativo fica em `/painel.html`. |
 | `npm run dev` | Gera tudo e já abre o servidor local. |
-| `npm run limpar` | Apaga apenas os artefatos gerados (QR Codes e o espelho de dados). |
+| `npm run limpar` | Apaga apenas os artefatos gerados (QR Codes e o índice). Não toca nos dados. |
 
 ---
 
@@ -84,7 +104,7 @@ node --version
 npm run cadastrar
 ```
 
-O assistente pergunta cada campo, sugere o próximo registro livre, valida o CPF pelos dígitos verificadores e, ao final, oferece rodar a geração completa.
+O assistente pergunta cada campo, **sorteia o identificador**, valida o CPF pelos dígitos verificadores, grava `dados/<id>.json` e, ao final, oferece rodar a geração completa.
 
 ### Opção B — pelo painel no navegador
 
@@ -94,18 +114,20 @@ npm start
 
 Abra `http://localhost:4173/painel.html`, preencha o formulário **“Cadastrar novo servidor”** e clique em **Gerar registro**. Você pode:
 
-- **Copiar registro** — cole o bloco dentro da lista `funcionarios` em `dados/funcionarios.json`;
-- **Baixar funcionarios.json completo** — substitua o arquivo em `dados/`.
+O identificador já vem sorteado no formulário. Depois:
 
-Depois, execute `npm run gerar`.
+- **Copiar registro** — cole em um arquivo novo;
+- **Baixar o arquivo .json** — já vem com o nome certo.
 
-### Opção C — editando o JSON
+Salve em `dados/` e execute `npm run gerar`.
 
-Abra `dados/funcionarios.json` e acrescente um objeto ao final da lista `funcionarios`:
+### Opção C — criando o arquivo à mão
+
+Crie `dados/<identificador>.json` com um único servidor dentro:
 
 ```json
 {
-  "id": "000008",
+  "id": "k91d8m2a",
   "nome": "Nome Completo do Servidor",
   "cpf": "000.000.000-00",
   "endereco": "Rua Exemplo, nº 100, Centro - Taguatinga/TO - CEP 77.295-000",
@@ -116,7 +138,15 @@ Abra `dados/funcionarios.json` e acrescente um objeto ao final da lista `funcion
 }
 ```
 
-O campo `id` é o número que vai no QR Code (`?id=000008`) e deve ter **6 dígitos e ser único**.
+Duas regras que o gerador cobra:
+
+1. O campo `id` tem de ser **igual ao nome do arquivo** (`k91d8m2a` ↔ `k91d8m2a.json`).
+2. O identificador precisa ter **8 ou mais caracteres**, só letras minúsculas e números.
+
+Se preferir não inventar, use o formulário do painel — ele sorteia para você.
+
+> O bloco `meta` que aparece nos arquivos existentes é escrito pelo `npm run gerar`
+> a partir do `config.json`. Não precisa criar, e não adianta editar à mão.
 
 ---
 
@@ -130,9 +160,13 @@ Produz:
 
 | Saída | Descrição |
 | --- | --- |
-| `qrcodes/000001.png` | PNG 300 × 300 px, correção de erro **H** (30%), margem de 2 módulos. |
-| `dados/funcionarios.js` | Espelho da base que faz as páginas funcionarem mesmo abertas via `file://`. |
+| `qrcodes/<id>.png` | PNG 300 × 300 px, correção de erro **H** (30%), margem de 2 módulos. |
+| `dados/<id>.json` | Regravado normalizado, com os textos institucionais embutidos. |
+| `dados/_painel.json` | Índice com todos os servidores, **só local** — ver item 11. |
 | `painel.html` | Bloco “Última geração” atualizado automaticamente. |
+
+O gerador varre a pasta `dados/`, valida cada arquivo e recusa a geração se algum
+identificador estiver duplicado, malformado ou diferente do nome do arquivo.
 
 Para testar antes de publicar:
 
@@ -140,7 +174,7 @@ Para testar antes de publicar:
 npm start
 ```
 
-Depois abra `http://localhost:4173/verificar.html?id=000001`.
+Depois abra `http://localhost:4173/verificar.html?id=<identificador>` — o terminal imprime um exemplo pronto.
 O terminal também mostra o endereço na rede local (ex.: `http://192.168.0.10:4173/`) — útil para escanear o QR Code com o celular ainda na fase de testes.
 
 ---
@@ -215,17 +249,17 @@ credencial-vigilancia/
 │   │   └── painel.css            Painel administrativo
 │   ├── js/
 │   │   ├── core.js               Namespace VS e constantes
-│   │   ├── format.js             Formatação (CPF, datas) — usado no navegador E no Node
+│   │   ├── format.js             CPF, datas e identificadores — navegador E Node
 │   │   ├── icones.js             Selos de situação e ícones de campo em SVG inline
-│   │   ├── dados.js              Carregamento da base (fetch + fallback file://)
+│   │   ├── dados.js              Busca de uma credencial (e do índice, no painel)
 │   │   ├── credencial.js         Componente visual da credencial
 │   │   ├── verificar.js          Controlador de verificar.html
 │   │   └── painel.js             Controlador de painel.html
 │   └── img/
 │       └── logo.png              Brasão da prefeitura
 ├── dados/
-│   ├── funcionarios.json         FONTE ÚNICA DE DADOS
-│   └── funcionarios.js           Espelho gerado automaticamente
+│   ├── <id>.json                 UM ARQUIVO POR SERVIDOR — a base
+│   └── _painel.json              Índice do painel — NÃO publicado (.gitignore)
 ├── gerador/
 │   ├── index.js                  npm run gerar — orquestrador do pipeline
 │   ├── cadastrar.js              npm run cadastrar
@@ -234,7 +268,7 @@ credencial-vigilancia/
 │   └── lib/
 │       ├── config.js             Caminhos e leitura de configuração
 │       ├── log.js                Saída colorida no terminal
-│       ├── dados.js              Normalização e validação da base
+│       ├── dados.js              Varredura, normalização e validação de dados/
 │       ├── qrcode.js             Geração dos PNGs
 │       └── html.js               Atualização do painel.html e do espelho de dados
 ├── qrcodes/                      QR Codes gerados
@@ -253,7 +287,7 @@ credencial-vigilancia/
 
 | Campo | Obrigatório | Observação |
 | --- | --- | --- |
-| `id` | Sim | 6 dígitos, único. É o `?id=` do QR Code. |
+| `id` | Sim | 8+ caracteres `[a-z0-9]`, único, **permanente**. É o `?id=` do QR Code e o nome do arquivo. |
 | `nome` | Sim | Nome completo. |
 | `cpf` | Sim | Gravado completo; **exibido mascarado** (`817.***.***-34`). |
 | `endereco` | Não | Endereço exibido na credencial. |
@@ -311,15 +345,19 @@ Depois abra `http://localhost:4173/painel.html`.
 | Endereço | Publicado | Conteúdo |
 | --- | --- | --- |
 | `/` | Sim | Página institucional. Sem lista, sem dados, sem formulário. |
-| `/verificar.html?id=000001` | Sim | Uma credencial por vez, com CPF mascarado. |
-| `/dados/funcionarios.json` | Sim | **A base inteira.** Ver aviso abaixo. |
+| `/verificar.html?id=<id>` | Sim | Uma credencial por vez, com CPF mascarado. |
+| `/dados/<id>.json` | Sim | **Um** servidor. Só alcança quem já souber o identificador. |
+| `/dados/_painel.json` | **Não** | O índice com todos. Só local. |
 | `/painel.html` | **Não** | Lista de servidores e cadastro. Só local. |
 
-> **Aviso.** A página de validação precisa ler `dados/funcionarios.json` pelo
-> navegador, então esse arquivo é obrigatoriamente público. Quem digitar esse
-> endereço vê os dados dos servidores — nome, CPF, endereço, cargo, matrícula.
-> Isso é limitação de hospedagem estática, não do sistema. Para eliminar,
-> seria necessário um servidor com autenticação.
+> **Aviso.** Não existe mais uma lista pública para baixar de uma vez, mas cada
+> `dados/<id>.json` continua sendo um arquivo público: quem tiver o
+> identificador lê nome, CPF mascarado, endereço, cargo e matrícula daquela
+> pessoa — o mesmo que ela já mostra no crachá. O que os identificadores
+> sorteados impedem é **descobrir os outros servidores a partir de um só**.
+>
+> Sigilo de verdade exigiria um servidor com autenticação, o que sai do
+> GitHub Pages gratuito.
 
 ---
 
@@ -327,14 +365,16 @@ Depois abra `http://localhost:4173/painel.html`.
 
 | Sintoma | Causa e solução |
 | --- | --- |
-| QR Code abre "CREDENCIAL NÃO ENCONTRADA" | O `id` não existe em `dados/funcionarios.json`, ou o `npm run gerar` não foi executado depois do cadastro. |
+| QR Code abre "CREDENCIAL NÃO ENCONTRADA" | Não existe `dados/<id>.json` para esse identificador, ou o arquivo não foi publicado ainda. |
 | QR Code aponta para `SEU_USUARIO` | Falta trocar `githubUser` em `config.json` e rodar `npm run gerar` de novo. |
 | Página em branco no GitHub Pages | Aguarde 2 minutos após o push e confira em *Settings → Pages* se a branch é `main` / root. |
 | Alterou o JSON e o site não mudou | Rode `npm run gerar` e faça `git push`. O GitHub Pages serve o que está commitado. |
+| `renomeie o arquivo para <id>.json` | O nome do arquivo e o campo `id` têm de ser iguais. |
+| Painel vazio, reclamando do índice | Rode `npm run gerar`. O `_painel.json` é gerado, não versionado. |
 | "CPF não passa na validação" | Aviso, não erro. Confira os dígitos verificadores do CPF digitado. |
 | `EADDRINUSE` ao rodar `npm start` | Porta ocupada. Use `PORT=4174 npm start`. |
 | `npm start` não encontra o package.json | Você está na pasta errada. Entre em `credencial-vigilancia/` antes de rodar. |
-| Página abre pelo Explorer mas sem dados | Normal em `file://`. O espelho `dados/funcionarios.js` resolve — basta ter rodado `npm run gerar`. |
+| Página abre pelo Explorer mas sem dados | O navegador bloqueia `fetch` em `file://`. Use `npm start` e abra por `http://localhost:4173`. |
 
 ---
 

@@ -15,7 +15,7 @@
 
   const VS = global.VS || (global.VS = {});
 
-  /** Textos institucionais padrão (sobrescritos por dados/funcionarios.json > meta). */
+  /** Textos institucionais padrão (sobrescritos pelo bloco meta de dados/<id>.json). */
   VS.ORGAO = {
     prefeitura: 'PREFEITURA MUNICIPAL DE',
     municipio: 'TAGUATINGA',
@@ -47,8 +47,10 @@
 
   /** Caminhos relativos usados pelas páginas. */
   VS.CAMINHOS = {
-    json: 'dados/funcionarios.json',
-    fallbackJs: 'dados/funcionarios.js',
+    /** Pasta com um JSON por servidor: dados/<id>.json. */
+    dados: 'dados/',
+    /** Índice com todos os servidores. Só existe localmente — ver .gitignore. */
+    indicePainel: 'dados/_painel.json',
     qrcodes: 'qrcodes/',
     logo: 'assets/img/logo.png'
   };

@@ -2,12 +2,14 @@
  * dados.js
  * Camada de acesso a dados do navegador.
  *
- * Estratégia de carregamento em dois estágios:
- *  1. fetch() em dados/funcionarios.json  — caminho normal (GitHub Pages/HTTP).
- *  2. dados/funcionarios.js (window.__FUNCIONARIOS__) — fallback automático
- *     para quando a página é aberta via file://, onde o fetch é bloqueado.
+ * Cada servidor mora em seu próprio dados/<id>.json. A página de validação
+ * busca exatamente um arquivo — o do identificador que veio no QR Code — e
+ * nunca a lista completa. É o que impede que alguém com um QR Code na mão
+ * baixe o quadro inteiro de servidores.
  *
- * O arquivo de fallback é gerado por `npm run gerar`.
+ * O painel administrativo precisa da lista, e por isso lê dados/_painel.json.
+ * Esse índice fica fora do GitHub Pages (.gitignore) e só existe na máquina
+ * do coordenador, servido por `npm start`.
  */
 (function (global) {
   'use strict';
@@ -15,47 +17,57 @@
   const VS = global.VS || (global.VS = {});
   const { Format, CAMINHOS, SITUACAO } = VS;
 
-  /** Cache em memória para não recarregar o JSON a cada consulta. */
-  let cache = null;
+  /** Credenciais já buscadas nesta sessão, por id. */
+  const cache = new Map();
 
   const Dados = {
     /**
-     * Carrega a base de funcionários (com cache).
+     * Carrega a credencial de um servidor.
+     *
+     * Devolve null quando o identificador não existe ou é malformado — os dois
+     * casos levam à mesma tela de "não encontrada", e distinguir só ajudaria
+     * quem estivesse sondando identificadores.
+     *
+     * @param {string} id
      * @param {string} [prefixo] caminho relativo até a raiz do projeto
-     * @returns {Promise<{meta: object, funcionarios: object[]}>}
+     * @returns {Promise<{funcionario: object, meta: object}|null>}
      */
-    async carregar(prefixo = '') {
-      if (cache) return cache;
+    async carregarCredencial(id, prefixo = '') {
+      const alvo = Format.normalizarId(id);
+      if (!alvo) return null;
+      if (cache.has(alvo)) return cache.get(alvo);
 
-      const base = await Dados._viaFetch(prefixo + CAMINHOS.json).catch((erro) => {
-        VS.log('aviso', 'fetch do JSON indisponível, usando fallback:', erro.message);
+      const resposta = await fetch(`${prefixo}${CAMINHOS.dados}${alvo}.json`, { cache: 'no-store' });
+      if (resposta.status === 404) {
+        cache.set(alvo, null);
         return null;
-      });
-
-      const bruto = base || (await Dados._viaScript(prefixo + CAMINHOS.fallbackJs));
-
-      if (!bruto || !Array.isArray(bruto.funcionarios)) {
-        throw new Error('Base de funcionários indisponível ou malformada.');
       }
+      if (!resposta.ok) throw new Error(`HTTP ${resposta.status} ao consultar a credencial.`);
 
-      cache = {
-        meta: bruto.meta || {},
-        funcionarios: bruto.funcionarios.map(Dados.normalizar)
-      };
-      return cache;
+      const bruto = await resposta.json();
+      const resultado = { funcionario: Dados.normalizar(bruto), meta: bruto.meta || {} };
+      cache.set(alvo, resultado);
+      return resultado;
     },
 
     /**
-     * Busca um funcionário pelo identificador (aceita 1, "1" ou "000001").
-     * @param {string|number} id
+     * Carrega o índice completo. Só funciona localmente, via `npm start`.
      * @param {string} [prefixo]
-     * @returns {Promise<object|null>}
+     * @returns {Promise<{meta: object, funcionarios: object[]}>}
      */
-    async buscarPorId(id, prefixo = '') {
-      const alvo = Format.normalizarId(id);
-      if (!alvo) return null;
-      const { funcionarios } = await Dados.carregar(prefixo);
-      return funcionarios.find((f) => f.id === alvo) || null;
+    async carregarIndice(prefixo = '') {
+      const resposta = await fetch(`${prefixo}${CAMINHOS.indicePainel}`, { cache: 'no-store' });
+      if (!resposta.ok) {
+        throw new Error(
+          `Índice indisponível (HTTP ${resposta.status}). Rode "npm run gerar" e abra o painel por "npm start".`
+        );
+      }
+      const bruto = await resposta.json();
+      if (!Array.isArray(bruto.funcionarios)) throw new Error('Índice malformado.');
+      return {
+        meta: bruto.meta || {},
+        funcionarios: bruto.funcionarios.map(Dados.normalizar)
+      };
     },
 
     /**
@@ -64,10 +76,8 @@
      * @returns {object}
      */
     normalizar(f) {
-      const id = Format.normalizarId(f.id);
       return {
-        ...f,
-        id,
+        id: Format.normalizarId(f.id),
         nome: String(f.nome || '').trim(),
         cpf: Format.formatarCPF(f.cpf),
         endereco: String(f.endereco || '').trim(),
@@ -87,28 +97,6 @@
     situacao(f) {
       if (!f) return SITUACAO.NAO_ENCONTRADA;
       return f.status === SITUACAO.REVOGADA ? SITUACAO.REVOGADA : SITUACAO.VALIDA;
-    },
-
-    /** @private Carrega o JSON por fetch. */
-    async _viaFetch(url) {
-      const resposta = await fetch(url, { cache: 'no-store' });
-      if (!resposta.ok) throw new Error(`HTTP ${resposta.status} em ${url}`);
-      return resposta.json();
-    },
-
-    /** @private Injeta o arquivo de fallback e lê window.__FUNCIONARIOS__. */
-    _viaScript(url) {
-      return new Promise((resolve, reject) => {
-        if (global.__FUNCIONARIOS__) return resolve(global.__FUNCIONARIOS__);
-        const script = document.createElement('script');
-        script.src = url;
-        script.onload = () =>
-          global.__FUNCIONARIOS__
-            ? resolve(global.__FUNCIONARIOS__)
-            : reject(new Error('Fallback carregado sem dados.'));
-        script.onerror = () => reject(new Error(`Falha ao carregar ${url}`));
-        document.head.appendChild(script);
-      });
     }
   };
 
